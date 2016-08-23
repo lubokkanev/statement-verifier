@@ -10,7 +10,7 @@ public class StatementParserImpl implements StatementParser {
     }
 
     @Override
-    public boolean evaluate(String statement) {
+    public boolean evaluateStatement(String statement) {
         // TODO: Niki / Vicky
         return false;
     }
