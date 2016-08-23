@@ -1,6 +1,6 @@
 package com.nvl.ui;
 
-import com.nvl.runner.AssertionVerificator;
+import com.nvl.verificator.AssertionVerificator;
 
 public class GraphicalUserInterfaceImpl implements GraphicalUserInterface {
     private AssertionVerificator assertionVerificator;

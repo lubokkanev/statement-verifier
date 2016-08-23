@@ -3,11 +3,11 @@ package com.nvl;
 import com.nvl.parser.statement.StatementParserImpl;
 import com.nvl.parser.value.ValueParserImpl;
 import com.nvl.parser.variable_definition.VariableDefinitionParserImpl;
-import com.nvl.runner.AssertionVerificator;
-import com.nvl.runner.AssertionVerificatorImpl;
 import com.nvl.ui.GraphicalUserInterface;
 import com.nvl.ui.GraphicalUserInterfaceImpl;
 import com.nvl.variable.manager.VariableManagerImpl;
+import com.nvl.verificator.AssertionVerificator;
+import com.nvl.verificator.AssertionVerificatorImpl;
 
 import java.util.Scanner;
 

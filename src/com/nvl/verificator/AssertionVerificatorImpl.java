@@ -1,4 +1,4 @@
-package com.nvl.runner;
+package com.nvl.verificator;
 
 import com.nvl.parser.statement.StatementParser;
 import com.nvl.parser.value.ValueParser;

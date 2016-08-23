@@ -1,4 +1,4 @@
-package com.nvl.runner;
+package com.nvl.verificator;
 
 public interface AssertionVerificator {
     void addVariable();
