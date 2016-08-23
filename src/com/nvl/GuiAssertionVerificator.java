@@ -9,8 +9,6 @@ import com.nvl.variable.manager.VariableManagerImpl;
 import com.nvl.verificator.AssertionVerificator;
 import com.nvl.verificator.AssertionVerificatorImpl;
 
-import java.util.Scanner;
-
 public class GuiAssertionVerificator {
     private AssertionVerificator assertionVerificator;
     private GraphicalUserInterface graphicalUserInterface;
@@ -21,7 +19,7 @@ public class GuiAssertionVerificator {
         StatementParserImpl statementParser = new StatementParserImpl(variableManager);
         VariableDefinitionParserImpl variableDefinitionParser = new VariableDefinitionParserImpl();
 
-        assertionVerificator = new AssertionVerificatorImpl(statementParser, valueParser, variableDefinitionParser, new Scanner(System.in), variableManager);
+        assertionVerificator = new AssertionVerificatorImpl(statementParser, valueParser, variableDefinitionParser, variableManager);
         graphicalUserInterface = new GraphicalUserInterfaceImpl(assertionVerificator);
     }
 

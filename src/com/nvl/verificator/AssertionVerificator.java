@@ -1,9 +1,15 @@
 package com.nvl.verificator;
 
+import com.nvl.variable.Variable;
+
+import java.util.Set;
+
 public interface AssertionVerificator {
-    void addVariable();
+    void addVariable(String variableDefinition);
 
-    void updateVariable();
+    void updateVariable(String variableDefinition);
 
-    boolean evaluateStatement();
+    boolean evaluateStatement(String statement);
+
+    Set<Variable> variables();
 }
