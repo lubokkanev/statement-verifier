@@ -4,5 +4,5 @@ public enum VariableType {
     STRING,
     NUMBER,
     BOOLEAN
+    // TODO: add array type
 }
-

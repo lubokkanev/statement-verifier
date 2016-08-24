@@ -22,8 +22,8 @@ public class VariableManagerImpl implements VariableManager {
         EvaluatedResult result = valueParser.parse(value);
         // TODO: Lubo - like the other one, remove the parser from this class
         // TODO: Lubo - maybe change the manager with just a map
-        Variable variable = new Variable(name, result.getType(), result.getValue());
-        allVariables.put(name, variable);
+        Variable newVariable = new Variable(name, result.getType(), result.getValue());
+        allVariables.put(name, newVariable);
     }
 
     public void removeVariable(String name) {

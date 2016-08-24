@@ -10,7 +10,6 @@ import com.nvl.verificator.AssertionVerificator;
 import com.nvl.verificator.AssertionVerificatorImpl;
 
 public class GuiAssertionVerificator {
-    private AssertionVerificator assertionVerificator;
     private GraphicalUserInterface graphicalUserInterface;
 
     public GuiAssertionVerificator() {
@@ -18,8 +17,8 @@ public class GuiAssertionVerificator {
         VariableManagerImpl variableManager = new VariableManagerImpl(valueParser);
         StatementParserImpl statementParser = new StatementParserImpl(variableManager);
         VariableDefinitionParserImpl variableDefinitionParser = new VariableDefinitionParserImpl();
+        AssertionVerificator assertionVerificator = new AssertionVerificatorImpl(statementParser, valueParser, variableDefinitionParser, variableManager);
 
-        assertionVerificator = new AssertionVerificatorImpl(statementParser, valueParser, variableDefinitionParser, variableManager);
         graphicalUserInterface = new GraphicalUserInterfaceImpl(assertionVerificator);
     }
 
