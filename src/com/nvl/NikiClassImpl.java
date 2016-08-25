@@ -14,7 +14,7 @@ import java.util.Set;
  *
  * @author Ratzy
  */
-public class NikiClassImpl implements NikiClass{
+public class NikiClassImpl implements Verifier{
 
        /*This takes the user's input, parses it, decides which function to call
         and returns the result to be displayed as string 
@@ -22,7 +22,7 @@ public class NikiClassImpl implements NikiClass{
             ,"Something is True/false "
             ,"X = 7"  */
     @Override
-    public String niki(String userInput) {
+    public String verify(String userInput) {
         return "Variable added successfully";
     }
     

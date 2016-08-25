@@ -5,7 +5,7 @@
  */
 package com.nvl.ui;
 
-import com.nvl.NikiClass;
+import com.nvl.Verifier;
 import com.nvl.NikiClassImpl;
 import com.nvl.variable.Variable;
 import java.util.HashSet;
@@ -15,15 +15,15 @@ import java.util.Set;
  *
  * @author Ratzy
  */
-public class AssertionVerificatorFrame extends javax.swing.JFrame {
+public class AssertionVerifierFrame extends javax.swing.JFrame {
 
-    private NikiClass verificator;
+    private Verifier verificator;
     private Set<Variable> variables;
 
     /**
      * Creates new form AssertionVerificatorFrame
      */
-    public AssertionVerificatorFrame() {
+    public AssertionVerifierFrame() {
         initComponents();
         verificator = new NikiClassImpl();
         variables = new HashSet<>();
@@ -135,7 +135,7 @@ public class AssertionVerificatorFrame extends javax.swing.JFrame {
         String input = txtInputStatement.getText();
         input = input.trim();
         if (!input.isEmpty()) {
-            String result = verificator.niki(input);
+            String result = verificator.verify(input);
             lblResult.setText(result);
             if (result.equals("Variable added successfully") || result.equals("Variable updated successfully")) {
                 variables = verificator.variables();
@@ -149,7 +149,7 @@ public class AssertionVerificatorFrame extends javax.swing.JFrame {
     private void printVariables() {
         StringBuilder sb = new StringBuilder();
         for (Variable v : variables) {
-            sb.append(String.format("%s = %s; Type = %s\n", v.getName(), v.getValue(), v.getType()));
+            sb.append(String.format("%s = %s\n", v.getName(), v.getValue()));
         }
         txtAreaVariables.setText(sb.toString());
     }
@@ -171,20 +171,20 @@ public class AssertionVerificatorFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AssertionVerificatorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AssertionVerifierFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AssertionVerificatorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AssertionVerifierFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AssertionVerificatorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AssertionVerifierFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AssertionVerificatorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AssertionVerifierFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AssertionVerificatorFrame().setVisible(true);
+                new AssertionVerifierFrame().setVisible(true);
             }
         });
     }

@@ -4,8 +4,8 @@ import com.nvl.variable.Variable;
 
 import java.util.Set;
 
-public interface NikiClass {
-    String niki(String userInput);
+public interface Verifier {
+    String verify(String userInput);
 
     Set<Variable> variables();
 }
