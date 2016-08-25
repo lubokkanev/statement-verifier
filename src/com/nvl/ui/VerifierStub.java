@@ -7,6 +7,8 @@ package com.nvl.ui;
 
 import com.nvl.variable.Variable;
 import com.nvl.variable.VariableType;
+import com.nvl.verificator.AssertionVerifier;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,14 +23,20 @@ public class VerifierStub implements Verifier {
         e.g. "Variable added/updated successfully"
             ,"Something is True/false "
             ,"X = 7"  */
+    /* (non-Javadoc)
+	 * @see com.nvl.ui.Verifier#verify(java.lang.String)
+	 */
     @Override
-    public String verify(String userInput) {
+	public String verify(String userInput) {
         return "Variable added successfully";
     }
     
     /*returns all variables, which the users has entered*/
+    /* (non-Javadoc)
+	 * @see com.nvl.ui.Verifier#variables()
+	 */
     @Override
-    public Set<Variable> variables() {
+	public Set<Variable> variables() {
         Set<Variable> result = new HashSet<>();
         result.add(new Variable("X", VariableType.NUMBER, "5"));
         result.add(new Variable("Y", VariableType.NUMBER, "26"));

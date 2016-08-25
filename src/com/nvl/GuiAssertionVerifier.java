@@ -5,6 +5,8 @@ import com.nvl.parser.value.ValueParserImpl;
 import com.nvl.parser.variable_definition.VariableDefinitionParserImpl;
 import com.nvl.ui.GraphicalUserInterface;
 import com.nvl.ui.GraphicalUserInterfaceImpl;
+import com.nvl.ui.GraphicalUserInterfaceImplOld;
+import com.nvl.ui.VerifierStub;
 import com.nvl.variable.manager.VariableManagerImpl;
 import com.nvl.verificator.AssertionVerifier;
 import com.nvl.verificator.AssertionVerifierImpl;
@@ -17,9 +19,9 @@ public class GuiAssertionVerifier {
         VariableManagerImpl variableManager = new VariableManagerImpl(valueParser);
         StatementParserImpl statementParser = new StatementParserImpl(variableManager);
         VariableDefinitionParserImpl variableDefinitionParser = new VariableDefinitionParserImpl();
-        AssertionVerifier assertionVerificator = new AssertionVerifierImpl(statementParser, valueParser, variableDefinitionParser, variableManager);
+        AssertionVerifier assertionVerifier = new AssertionVerifierImpl(statementParser, valueParser, variableDefinitionParser, variableManager);
 
-        graphicalUserInterface = new GraphicalUserInterfaceImpl(assertionVerificator);
+        graphicalUserInterface = new GraphicalUserInterfaceImpl(new VerifierStub());
     }
 
     public void run() {
@@ -28,6 +30,6 @@ public class GuiAssertionVerifier {
 
     public static void main(String[] args) {
         GuiAssertionVerifier guiAssertionVerificator = new GuiAssertionVerifier();
-        guiAssertionVerificator.run();
+        guiAssertionVerificator.main(args);
     }
 }
