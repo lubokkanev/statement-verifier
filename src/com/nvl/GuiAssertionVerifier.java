@@ -5,10 +5,10 @@ import com.nvl.parser.value.VariableTypeParserImpl;
 import com.nvl.parser.variable_definition.VariableDefinitionParserImpl;
 import com.nvl.ui.GraphicalUserInterface;
 import com.nvl.ui.GraphicalUserInterfaceImpl;
-import com.nvl.ui.VerifierStub;
 import com.nvl.variable.manager.VariableManagerImpl;
 import com.nvl.verifier.AssertionVerifier;
 import com.nvl.verifier.AssertionVerifierImpl;
+import com.nvl.verifier.VerifierStub;
 
 public class GuiAssertionVerifier {
     private GraphicalUserInterface graphicalUserInterface;

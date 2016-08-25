@@ -6,6 +6,7 @@
 package com.nvl.ui;
 
 import com.nvl.variable.Variable;
+import com.nvl.verifier.Verifier;
 
 /**
  * @author Ratzy
