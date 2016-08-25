@@ -1,5 +1,5 @@
 package com.nvl.parser.value;
 
-public interface ValueParser {
+public interface VariableTypeParser {
     EvaluatedResult parse(String value);
 }

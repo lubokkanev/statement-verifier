@@ -2,7 +2,7 @@ package com.nvl.parser.value;
 
 import com.nvl.variable.VariableType;
 
-public class ValueParserImpl implements ValueParser {
+public class VariableTypeParserImpl implements VariableTypeParser {
     @Override
     public EvaluatedResult parse(String value) {
         // TODO: Lubo

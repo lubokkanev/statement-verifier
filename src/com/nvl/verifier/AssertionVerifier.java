@@ -1,4 +1,4 @@
-package com.nvl.verificator;
+package com.nvl.verifier;
 
 import com.nvl.variable.Variable;
 

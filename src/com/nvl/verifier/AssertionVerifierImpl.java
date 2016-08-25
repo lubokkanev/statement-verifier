@@ -1,7 +1,7 @@
-package com.nvl.verificator;
+package com.nvl.verifier;
 
 import com.nvl.parser.statement.StatementParser;
-import com.nvl.parser.value.ValueParser;
+import com.nvl.parser.value.VariableTypeParser;
 import com.nvl.parser.variable_definition.UnevaluatedResult;
 import com.nvl.parser.variable_definition.VariableDefinitionParser;
 import com.nvl.variable.Variable;
@@ -14,7 +14,7 @@ public class AssertionVerifierImpl implements AssertionVerifier {
     private VariableDefinitionParser variableDefinitionParser;
     private VariableManager variableManager;
 
-    public AssertionVerifierImpl(StatementParser statementParser, ValueParser valueParser, VariableDefinitionParser variableDefinitionParser, VariableManager variableManager) {
+    public AssertionVerifierImpl(StatementParser statementParser, VariableTypeParser variableTypeParser, VariableDefinitionParser variableDefinitionParser, VariableManager variableManager) {
         this.statementParser = statementParser;
         this.variableDefinitionParser = variableDefinitionParser;
         this.variableManager = variableManager;

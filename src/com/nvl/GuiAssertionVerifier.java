@@ -1,21 +1,20 @@
 package com.nvl;
 
 import com.nvl.parser.statement.StatementParserImpl;
-import com.nvl.parser.value.ValueParserImpl;
+import com.nvl.parser.value.VariableTypeParserImpl;
 import com.nvl.parser.variable_definition.VariableDefinitionParserImpl;
 import com.nvl.ui.GraphicalUserInterface;
 import com.nvl.ui.GraphicalUserInterfaceImpl;
-import com.nvl.ui.GraphicalUserInterfaceImplOld;
 import com.nvl.ui.VerifierStub;
 import com.nvl.variable.manager.VariableManagerImpl;
-import com.nvl.verificator.AssertionVerifier;
-import com.nvl.verificator.AssertionVerifierImpl;
+import com.nvl.verifier.AssertionVerifier;
+import com.nvl.verifier.AssertionVerifierImpl;
 
 public class GuiAssertionVerifier {
     private GraphicalUserInterface graphicalUserInterface;
 
     public GuiAssertionVerifier() {
-        ValueParserImpl valueParser = new ValueParserImpl();
+        VariableTypeParserImpl valueParser = new VariableTypeParserImpl();
         VariableManagerImpl variableManager = new VariableManagerImpl(valueParser);
         StatementParserImpl statementParser = new StatementParserImpl(variableManager);
         VariableDefinitionParserImpl variableDefinitionParser = new VariableDefinitionParserImpl();
