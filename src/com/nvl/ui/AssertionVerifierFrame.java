@@ -5,8 +5,8 @@
  */
 package com.nvl.ui;
 
-import com.nvl.Verifier;
-import com.nvl.NikiClassImpl;
+import com.nvl.ui.Verifier;
+import com.nvl.ui.VerifierStub;
 import com.nvl.variable.Variable;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +17,7 @@ import java.util.Set;
  */
 public class AssertionVerifierFrame extends javax.swing.JFrame {
 
-    private Verifier verificator;
+    private Verifier verifier;
     private Set<Variable> variables;
 
     /**
@@ -25,7 +25,7 @@ public class AssertionVerifierFrame extends javax.swing.JFrame {
      */
     public AssertionVerifierFrame() {
         initComponents();
-        verificator = new NikiClassImpl();
+        verifier = new VerifierStub();
         variables = new HashSet<>();
     }
 
@@ -135,10 +135,10 @@ public class AssertionVerifierFrame extends javax.swing.JFrame {
         String input = txtInputStatement.getText();
         input = input.trim();
         if (!input.isEmpty()) {
-            String result = verificator.verify(input);
+            String result = verifier.verify(input);
             lblResult.setText(result);
             if (result.equals("Variable added successfully") || result.equals("Variable updated successfully")) {
-                variables = verificator.variables();
+                variables = verifier.variables();
                 printVariables();
             }
         }

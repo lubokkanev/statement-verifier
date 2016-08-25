@@ -1,11 +1,11 @@
 package com.nvl.ui;
 
-import com.nvl.verificator.AssertionVerificator;
+import com.nvl.verificator.AssertionVerifier;
 
 public class GraphicalUserInterfaceImpl implements GraphicalUserInterface {
-    private AssertionVerificator assertionVerificator;
+    private AssertionVerifier assertionVerificator;
 
-    public GraphicalUserInterfaceImpl(AssertionVerificator assertionVerificator) {
+    public GraphicalUserInterfaceImpl(AssertionVerifier assertionVerificator) {
         this.assertionVerificator = assertionVerificator;
     }
 

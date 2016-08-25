@@ -15,3 +15,8 @@ hs_err_pid*
 .idea/*
 assertion-verificator.iml
 
+/bin/
+.classpath
+.project
+.settings
+
