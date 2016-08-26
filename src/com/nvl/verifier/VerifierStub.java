@@ -37,8 +37,8 @@ public class VerifierStub implements Verifier {
     public Set<Variable> variables() {
         Set<Variable> result = new HashSet<>();
         result.add(new Variable("X", VariableType.NUMBER, "5"));
-        result.add(new Variable("Y", VariableType.NUMBER, "26"));
-        result.add(new Variable("Z", VariableType.NUMBER, "42"));
+        result.add(new Variable("Y", VariableType.STRING, "word"));
+        result.add(new Variable("Z", VariableType.BOOLEAN, "False"));
         return result;
     }
 }

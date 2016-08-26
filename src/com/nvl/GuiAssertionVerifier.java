@@ -8,7 +8,11 @@ import com.nvl.ui.GraphicalUserInterfaceImpl;
 import com.nvl.variable.manager.VariableManagerImpl;
 import com.nvl.verifier.AssertionVerifier;
 import com.nvl.verifier.AssertionVerifierImpl;
+import com.nvl.verifier.Verifier;
+import com.nvl.verifier.VerifierImpl;
 import com.nvl.verifier.VerifierStub;
+import com.nvl.verifier.determinator.Determinator;
+import com.nvl.verifier.determinator.DeterminatorImpl;
 
 public class GuiAssertionVerifier {
     private GraphicalUserInterface graphicalUserInterface;
@@ -20,15 +24,19 @@ public class GuiAssertionVerifier {
         VariableDefinitionParserImpl variableDefinitionParser = new VariableDefinitionParserImpl();
         AssertionVerifier assertionVerifier = new AssertionVerifierImpl(statementParser, valueParser, variableDefinitionParser, variableManager);
 
-        graphicalUserInterface = new GraphicalUserInterfaceImpl(new VerifierStub());
+        Determinator determinator = new DeterminatorImpl();
+        Verifier verifier = new VerifierImpl(determinator, assertionVerifier);
+        verifier = new VerifierStub();
+
+        graphicalUserInterface = new GraphicalUserInterfaceImpl(verifier);
     }
 
-    public void run() {
+    public void start() {
         graphicalUserInterface.start();
     }
 
     public static void main(String[] args) {
         GuiAssertionVerifier guiAssertionVerificator = new GuiAssertionVerifier();
-        guiAssertionVerificator.main(args);
+        guiAssertionVerificator.start();
     }
 }
