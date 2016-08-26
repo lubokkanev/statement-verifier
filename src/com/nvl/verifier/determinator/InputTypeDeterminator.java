@@ -1,5 +1,5 @@
 package com.nvl.verifier.determinator;
 
-public interface Determinator {
+public interface InputTypeDeterminator {
     InputType determineInput(String input);
 }

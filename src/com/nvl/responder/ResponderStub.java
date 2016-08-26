@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.nvl.verifier;
+package com.nvl.responder;
 
 import com.nvl.variable.Variable;
 import com.nvl.variable.VariableType;
@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * @author Ratzy
  */
-public class VerifierStub implements Verifier {
+public class ResponderStub implements Responder {
 
     /*This takes the user's input, parses it, decides which function to call
      and returns the result to be displayed as string
@@ -25,7 +25,7 @@ public class VerifierStub implements Verifier {
      * @see com.nvl.ui.Verifier#verify(java.lang.String)
 	 */
     @Override
-    public String verify(String userInput) {
+    public String process(String userInput) {
         return "Variable added successfully";
     }
 

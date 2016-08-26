@@ -1,37 +1,38 @@
-package com.nvl.verifier;
+package com.nvl.responder;
 
 import com.nvl.variable.Variable;
-import com.nvl.verifier.determinator.Determinator;
+import com.nvl.verifier.determinator.InputTypeDeterminator;
+import com.nvl.verifier.InputProcessor;
 import com.nvl.verifier.determinator.InputType;
 
 import java.util.Set;
 
-public class VerifierImpl implements Verifier {
-    private Determinator determinator;
-    private VariableManagerAndStatementParser assertionVerifier;
+public class ResponderImpl implements Responder {
+    private InputTypeDeterminator determinator;
+    private InputProcessor inputProcessor;
 
     private static final String NEW_VARIABLE_MESSAGE = "Variable added successfully. ";
     private static final String EXISTING_VARIABLE_MESSAGE = "Variable updated successfully. ";
     private static final String STATEMENT_FORMAT = "The statement is %s.";
 
-    public VerifierImpl(Determinator determinator, VariableManagerAndStatementParser assertionVerifier) {
+    public ResponderImpl(InputTypeDeterminator determinator, InputProcessor assertionVerifier) {
         this.determinator = determinator;
-        this.assertionVerifier = assertionVerifier;
+        this.inputProcessor = assertionVerifier;
     }
 
     @Override
-    public String verify(String userInput) {
+    public String process(String userInput) {
         InputType inputType = determinator.determineInput(userInput);
         String response = null;
 
         if (inputType == InputType.NEW_VARIABLE) {
-            assertionVerifier.addVariable(userInput);
+            inputProcessor.addVariable(userInput);
             response = NEW_VARIABLE_MESSAGE;
         } else if (inputType == InputType.EXISTING_VARIABLE) {
-            assertionVerifier.updateVariable(userInput);
+            inputProcessor.updateVariable(userInput);
             response = EXISTING_VARIABLE_MESSAGE;
         } else if (inputType == InputType.STATEMENT) {
-            boolean validStatement = assertionVerifier.evaluateStatement(userInput);
+            boolean validStatement = inputProcessor.verifyStatement(userInput);
             response = String.format(STATEMENT_FORMAT, Boolean.toString(validStatement));
         }
 
@@ -40,6 +41,6 @@ public class VerifierImpl implements Verifier {
 
     @Override
     public Set<Variable> variables() {
-        return assertionVerifier.variables();
+        return inputProcessor.variables();
     }
 }

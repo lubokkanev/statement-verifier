@@ -1,6 +1,6 @@
 package com.nvl.verifier.determinator;
 
-public class DeterminatorImpl implements Determinator {
+public class InputTypeDeterminatorImpl implements InputTypeDeterminator {
 
 	@Override
 	public InputType determineInput(String input) {

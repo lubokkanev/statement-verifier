@@ -4,12 +4,12 @@ import com.nvl.variable.Variable;
 
 import java.util.Set;
 
-public interface VariableManagerAndStatementParser {
+public interface InputProcessor {
     void addVariable(String variableDefinition);
 
     void updateVariable(String variableDefinition);
 
-    boolean evaluateStatement(String statement);
+    boolean verifyStatement(String statement);
 
     Set<Variable> variables();
 }

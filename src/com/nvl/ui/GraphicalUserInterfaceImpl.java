@@ -5,8 +5,8 @@
  */
 package com.nvl.ui;
 
+import com.nvl.responder.Responder;
 import com.nvl.variable.Variable;
-import com.nvl.verifier.Verifier;
 
 /**
  * @author Ratzy
@@ -17,14 +17,14 @@ public class GraphicalUserInterfaceImpl extends javax.swing.JFrame implements Gr
      *
      */
     private static final long serialVersionUID = 1L;
-    private Verifier verifier;
+    private Responder responder;
 
     /**
      * Creates new form AssertionVerificatorFrame
      */
-    public GraphicalUserInterfaceImpl(Verifier verifier) {
+    public GraphicalUserInterfaceImpl(Responder responder) {
         initComponents();
-        this.verifier = verifier;
+        this.responder = responder;
     }
 
     /**
@@ -100,7 +100,7 @@ public class GraphicalUserInterfaceImpl extends javax.swing.JFrame implements Gr
         String input = txtInputStatement.getText();
         input = input.trim();
         if (!input.isEmpty()) {
-            String result = verifier.verify(input);
+            String result = responder.process(input);
             lblResult.setText(result);
             if (result.equals("Variable added successfully") || result.equals("Variable updated successfully")) {
                 printVariables();
@@ -112,7 +112,7 @@ public class GraphicalUserInterfaceImpl extends javax.swing.JFrame implements Gr
     /*sets variable area with all entered variables*/
     private void printVariables() {
         StringBuilder sb = new StringBuilder();
-        for (Variable v : verifier.variables()) {
+        for (Variable v : responder.variables()) {
             sb.append(String.format("%s = %s\n", v.getName(), v.getValue()));
         }
         txtAreaVariables.setText(sb.toString());
@@ -148,7 +148,7 @@ public class GraphicalUserInterfaceImpl extends javax.swing.JFrame implements Gr
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GraphicalUserInterfaceImpl(verifier).setVisible(true);
+                new GraphicalUserInterfaceImpl(responder).setVisible(true);
             }
         });
     }

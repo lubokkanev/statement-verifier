@@ -1,22 +1,22 @@
 package com.nvl;
 
-import com.nvl.parser.statement.StatementParser;
-import com.nvl.parser.statement.StatementParserImpl;
+import com.nvl.parser.statement.StatementProcessor;
+import com.nvl.parser.statement.StatementProcessorImpl;
 import com.nvl.parser.value.VariableTypeParser;
 import com.nvl.parser.value.VariableTypeParserImpl;
 import com.nvl.parser.variable_definition.VariableDefinitionParser;
 import com.nvl.parser.variable_definition.VariableDefinitionParserImpl;
+import com.nvl.responder.Responder;
+import com.nvl.responder.ResponderImpl;
+import com.nvl.responder.ResponderStub;
 import com.nvl.ui.GraphicalUserInterface;
 import com.nvl.ui.GraphicalUserInterfaceImpl;
 import com.nvl.variable.manager.VariableManager;
 import com.nvl.variable.manager.VariableManagerImpl;
-import com.nvl.verifier.VariableManagerAndStatementParser;
-import com.nvl.verifier.VariableManagerAndStatementParserImpl;
-import com.nvl.verifier.Verifier;
-import com.nvl.verifier.VerifierImpl;
-import com.nvl.verifier.VerifierStub;
-import com.nvl.verifier.determinator.Determinator;
-import com.nvl.verifier.determinator.DeterminatorImpl;
+import com.nvl.verifier.InputProcessor;
+import com.nvl.verifier.InputProcessorImpl;
+import com.nvl.verifier.determinator.InputTypeDeterminator;
+import com.nvl.verifier.determinator.InputTypeDeterminatorImpl;
 
 public class GuiAssertionVerifier {
     private GraphicalUserInterface graphicalUserInterface;
@@ -24,15 +24,15 @@ public class GuiAssertionVerifier {
     public GuiAssertionVerifier() {
         VariableTypeParser valueParser = new VariableTypeParserImpl();
         VariableManager variableManager = new VariableManagerImpl();
-        StatementParser statementParser = new StatementParserImpl(variableManager);
+        StatementProcessor statementProcessor = new StatementProcessorImpl(variableManager);
         VariableDefinitionParser variableDefinitionParser = new VariableDefinitionParserImpl();
-        VariableManagerAndStatementParser assertionVerifier = new VariableManagerAndStatementParserImpl(statementParser, valueParser, variableDefinitionParser, variableManager);
+        InputProcessor inputProcessor = new InputProcessorImpl(statementProcessor, valueParser, variableDefinitionParser, variableManager);
 
-        Determinator determinator = new DeterminatorImpl();
-        Verifier verifier = new VerifierImpl(determinator, assertionVerifier);
-        verifier = new VerifierStub();
+        InputTypeDeterminator determinator = new InputTypeDeterminatorImpl();
+        Responder responder = new ResponderImpl(determinator, inputProcessor);
+        responder = new ResponderStub();
 
-        graphicalUserInterface = new GraphicalUserInterfaceImpl(verifier);
+        graphicalUserInterface = new GraphicalUserInterfaceImpl(responder);
     }
 
     public void start() {
@@ -40,7 +40,7 @@ public class GuiAssertionVerifier {
     }
 
     public static void main(String[] args) {
-        GuiAssertionVerifier guiAssertionVerificator = new GuiAssertionVerifier();
-        guiAssertionVerificator.start();
+        GuiAssertionVerifier guiAssertionVerifier = new GuiAssertionVerifier();
+        guiAssertionVerifier.start();
     }
 }
