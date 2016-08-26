@@ -4,7 +4,7 @@ import com.nvl.variable.Variable;
 
 import java.util.Set;
 
-public interface AssertionVerifier {
+public interface VariableManagerAndStatementParser {
     void addVariable(String variableDefinition);
 
     void updateVariable(String variableDefinition);

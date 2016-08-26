@@ -1,13 +1,17 @@
 package com.nvl;
 
+import com.nvl.parser.statement.StatementParser;
 import com.nvl.parser.statement.StatementParserImpl;
+import com.nvl.parser.value.VariableTypeParser;
 import com.nvl.parser.value.VariableTypeParserImpl;
+import com.nvl.parser.variable_definition.VariableDefinitionParser;
 import com.nvl.parser.variable_definition.VariableDefinitionParserImpl;
 import com.nvl.ui.GraphicalUserInterface;
 import com.nvl.ui.GraphicalUserInterfaceImpl;
+import com.nvl.variable.manager.VariableManager;
 import com.nvl.variable.manager.VariableManagerImpl;
-import com.nvl.verifier.AssertionVerifier;
-import com.nvl.verifier.AssertionVerifierImpl;
+import com.nvl.verifier.VariableManagerAndStatementParser;
+import com.nvl.verifier.VariableManagerAndStatementParserImpl;
 import com.nvl.verifier.Verifier;
 import com.nvl.verifier.VerifierImpl;
 import com.nvl.verifier.VerifierStub;
@@ -18,11 +22,11 @@ public class GuiAssertionVerifier {
     private GraphicalUserInterface graphicalUserInterface;
 
     public GuiAssertionVerifier() {
-        VariableTypeParserImpl valueParser = new VariableTypeParserImpl();
-        VariableManagerImpl variableManager = new VariableManagerImpl(valueParser);
-        StatementParserImpl statementParser = new StatementParserImpl(variableManager);
-        VariableDefinitionParserImpl variableDefinitionParser = new VariableDefinitionParserImpl();
-        AssertionVerifier assertionVerifier = new AssertionVerifierImpl(statementParser, valueParser, variableDefinitionParser, variableManager);
+        VariableTypeParser valueParser = new VariableTypeParserImpl();
+        VariableManager variableManager = new VariableManagerImpl();
+        StatementParser statementParser = new StatementParserImpl(variableManager);
+        VariableDefinitionParser variableDefinitionParser = new VariableDefinitionParserImpl();
+        VariableManagerAndStatementParser assertionVerifier = new VariableManagerAndStatementParserImpl(statementParser, valueParser, variableDefinitionParser, variableManager);
 
         Determinator determinator = new DeterminatorImpl();
         Verifier verifier = new VerifierImpl(determinator, assertionVerifier);

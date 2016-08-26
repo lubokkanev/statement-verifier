@@ -8,13 +8,13 @@ import java.util.Set;
 
 public class VerifierImpl implements Verifier {
     private Determinator determinator;
-    private AssertionVerifier assertionVerifier;
+    private VariableManagerAndStatementParser assertionVerifier;
 
     private static final String NEW_VARIABLE_MESSAGE = "Variable added successfully. ";
     private static final String EXISTING_VARIABLE_MESSAGE = "Variable updated successfully. ";
     private static final String STATEMENT_FORMAT = "The statement is %s.";
 
-    public VerifierImpl(Determinator determinator, AssertionVerifier assertionVerifier) {
+    public VerifierImpl(Determinator determinator, VariableManagerAndStatementParser assertionVerifier) {
         this.determinator = determinator;
         this.assertionVerifier = assertionVerifier;
     }
