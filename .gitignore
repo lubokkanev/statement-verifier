@@ -13,7 +13,7 @@ hs_err_pid*
 
 # user defined
 .idea/*
-assertion-verificator.iml
+*.iml
 
 /bin/
 .classpath
