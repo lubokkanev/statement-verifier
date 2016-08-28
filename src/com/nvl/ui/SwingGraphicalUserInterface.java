@@ -14,7 +14,7 @@ public class SwingGraphicalUserInterface extends javax.swing.JFrame implements G
     private Responder responder;
 
     /**
-     * Creates new form AssertionVerificatorFrame
+     * Creates new form StatementVerifierFrame
      */
     public SwingGraphicalUserInterface(Responder responder) {
         initComponents();

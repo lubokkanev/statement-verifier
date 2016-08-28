@@ -16,18 +16,18 @@ import com.nvl.verifier.determiner.InputTypeDeterminer;
 import com.nvl.verifier.determiner.SimpleInputTypeDeterminer;
 import com.nvl.verifier.processor.RequestProcessor;
 import com.nvl.verifier.processor.RequestProcessorImpl;
-import com.nvl.verifier.validator.InputValidator;
 import com.nvl.verifier.validator.GrammarInputValidator;
+import com.nvl.verifier.validator.InputValidator;
 
 import java.util.HashMap;
 
 /**
- * Constructs the AssertionVerifier and runs it on a GUI
+ * Constructs the StatementVerifier and runs it on a GUI
  */
-public class GuiAssertionVerifier {
+public class GuiStatementVerifier {
     private GraphicalUserInterface graphicalUserInterface;
 
-    public GuiAssertionVerifier() {
+    public GuiStatementVerifier() {
         VariableManager variableManager = new MapVariableManager(new HashMap<>());
         VariableTypeParser typeParser = new VariableTypeParserImpl();
         StatementProcessor statementProcessor = new StatementProcessorImpl(variableManager);
@@ -46,7 +46,7 @@ public class GuiAssertionVerifier {
     }
 
     public static void main(String[] args) {
-        GuiAssertionVerifier guiAssertionVerifier = new GuiAssertionVerifier();
-        guiAssertionVerifier.start();
+        GuiStatementVerifier guiStatementVerifier = new GuiStatementVerifier();
+        guiStatementVerifier.start();
     }
 }
