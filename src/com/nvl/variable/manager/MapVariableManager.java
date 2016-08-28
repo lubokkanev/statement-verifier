@@ -7,11 +7,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class VariableManagerImpl implements VariableManager {
+public class MapVariableManager implements VariableManager {
+    private final String INVALID_INPUT_MESSAGE = "You found a bug! Invalid input. ";
     private Map<String, EvaluatedVariable> allVariables;
 
-    public VariableManagerImpl() {
-        allVariables = new HashMap<>();
+    public MapVariableManager(HashMap<String, EvaluatedVariable> hashMap) {
+        allVariables = hashMap;
     }
 
     public void addVariable(EvaluatedVariable variable) {
@@ -23,6 +24,10 @@ public class VariableManagerImpl implements VariableManager {
     }
 
     public void updateVariable(EvaluatedVariable variable) {
+        if (!allVariables.containsKey(variable.getName())) {
+            throw new RuntimeException(INVALID_INPUT_MESSAGE);
+        }
+
         EvaluatedVariable variableToUpdate = allVariables.get(variable.getName());
         variableToUpdate.setValue(variable.getValue());
         variableToUpdate.setType(variable.getType());

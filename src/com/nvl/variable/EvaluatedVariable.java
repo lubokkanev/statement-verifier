@@ -34,4 +34,28 @@ public class EvaluatedVariable {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        EvaluatedVariable variable = (EvaluatedVariable) o;
+        if (name != null ? !name.equals(variable.name) : variable.name != null) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        return result;
+    }
 }

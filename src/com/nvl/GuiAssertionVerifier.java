@@ -10,14 +10,16 @@ import com.nvl.responder.Responder;
 import com.nvl.responder.ResponderImpl;
 import com.nvl.ui.GraphicalUserInterface;
 import com.nvl.ui.SwingGraphicalUserInterface;
+import com.nvl.variable.manager.MapVariableManager;
 import com.nvl.variable.manager.VariableManager;
-import com.nvl.variable.manager.VariableManagerImpl;
 import com.nvl.verifier.determiner.InputTypeDeterminer;
-import com.nvl.verifier.determiner.InputTypeDeterminerImpl;
+import com.nvl.verifier.determiner.SimpleInputTypeDeterminer;
 import com.nvl.verifier.processor.RequestProcessor;
 import com.nvl.verifier.processor.RequestProcessorImpl;
 import com.nvl.verifier.validator.InputValidator;
 import com.nvl.verifier.validator.InputValidatorImpl;
+
+import java.util.HashMap;
 
 /**
  * Constructs the AssertionVerifier and runs it on a GUI
@@ -26,14 +28,14 @@ public class GuiAssertionVerifier {
     private GraphicalUserInterface graphicalUserInterface;
 
     public GuiAssertionVerifier() {
-        VariableManager variableManager = new VariableManagerImpl();
+        VariableManager variableManager = new MapVariableManager(new HashMap<>());
         VariableTypeParser typeParser = new VariableTypeParserImpl();
         StatementProcessor statementProcessor = new StatementProcessorImpl(variableManager);
         VariableDefinitionParser variableDefinitionParser = new VariableDefinitionParserImpl();
         RequestProcessor requestProcessor = new RequestProcessorImpl(statementProcessor, typeParser, variableDefinitionParser, variableManager);
         InputValidator inputValidator = new InputValidatorImpl(variableManager);
 
-        InputTypeDeterminer typeDeterminer = new InputTypeDeterminerImpl(variableManager);
+        InputTypeDeterminer typeDeterminer = new SimpleInputTypeDeterminer(variableManager);
         Responder responder = new ResponderImpl(typeDeterminer, requestProcessor, inputValidator);
 
         graphicalUserInterface = new SwingGraphicalUserInterface(responder);
