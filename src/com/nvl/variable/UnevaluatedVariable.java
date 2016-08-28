@@ -1,10 +1,10 @@
-package com.nvl.parser.variable_definition;
+package com.nvl.variable;
 
-public class UnevaluatedResult {
+public class UnevaluatedVariable {
     private String name;
     private String value;
 
-    public UnevaluatedResult(String name, String value) {
+    public UnevaluatedVariable(String name, String value) {
         this.name = name;
         this.value = value;
     }

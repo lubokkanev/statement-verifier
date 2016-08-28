@@ -5,7 +5,7 @@
  */
 package com.nvl.responder;
 
-import com.nvl.variable.Variable;
+import com.nvl.variable.EvaluatedVariable;
 import com.nvl.variable.VariableType;
 
 import java.util.HashSet;
@@ -34,11 +34,11 @@ public class ResponderStub implements Responder {
      * @see com.nvl.ui.Verifier#variables()
 	 */
     @Override
-    public Set<Variable> variables() {
-        Set<Variable> result = new HashSet<>();
-        result.add(new Variable("X", VariableType.NUMBER, "5"));
-        result.add(new Variable("Y", VariableType.STRING, "word"));
-        result.add(new Variable("Z", VariableType.BOOLEAN, "False"));
+    public Set<EvaluatedVariable> variables() {
+        Set<EvaluatedVariable> result = new HashSet<>();
+        result.add(new EvaluatedVariable(VariableType.NUMBER, "5", "X"));
+        result.add(new EvaluatedVariable(VariableType.STRING, "word", "Y"));
+        result.add(new EvaluatedVariable(VariableType.BOOLEAN, "False", "Z"));
         return result;
     }
 }

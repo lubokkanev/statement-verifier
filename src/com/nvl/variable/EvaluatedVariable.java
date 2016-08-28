@@ -1,15 +1,15 @@
-package com.nvl.parser.value;
+package com.nvl.variable;
 
-import com.nvl.variable.VariableType;
-
-public class EvaluatedResult {
-    public EvaluatedResult(VariableType type, String value) {
+public class EvaluatedVariable {
+    public EvaluatedVariable(VariableType type, String value, String name) {
         this.type = type;
         this.value = value;
+        this.name = name;
     }
 
     private VariableType type;
     private String value;
+    private String name;
 
     public VariableType getType() {
         return type;
@@ -25,5 +25,13 @@ public class EvaluatedResult {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

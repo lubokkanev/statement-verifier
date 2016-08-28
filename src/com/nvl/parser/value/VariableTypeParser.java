@@ -1,5 +1,11 @@
 package com.nvl.parser.value;
 
+import com.nvl.variable.EvaluatedVariable;
+import com.nvl.variable.UnevaluatedVariable;
+
+/**
+ * Parses the variable value to find its type
+ */
 public interface VariableTypeParser {
-    EvaluatedResult parse(String value);
+    EvaluatedVariable parse(UnevaluatedVariable variable);
 }

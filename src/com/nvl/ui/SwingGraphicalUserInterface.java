@@ -6,23 +6,17 @@
 package com.nvl.ui;
 
 import com.nvl.responder.Responder;
-import com.nvl.variable.Variable;
+import com.nvl.variable.EvaluatedVariable;
 
-/**
- * @author Ratzy
- */
-public class GraphicalUserInterfaceImpl extends javax.swing.JFrame implements GraphicalUserInterface {
-
-    /**
-     *
-     */
+// TODO: Nicky - make the Enter key press the button. Make the press of the button focus the text box.
+public class SwingGraphicalUserInterface extends javax.swing.JFrame implements GraphicalUserInterface {
     private static final long serialVersionUID = 1L;
     private Responder responder;
 
     /**
      * Creates new form AssertionVerificatorFrame
      */
-    public GraphicalUserInterfaceImpl(Responder responder) {
+    public SwingGraphicalUserInterface(Responder responder) {
         initComponents();
         this.responder = responder;
     }
@@ -100,11 +94,15 @@ public class GraphicalUserInterfaceImpl extends javax.swing.JFrame implements Gr
         String input = txtInputStatement.getText();
         input = input.trim();
         if (!input.isEmpty()) {
-            String result = responder.process(input);
-            lblResult.setText(result);
-            if (result.equals("Variable added successfully") || result.equals("Variable updated successfully")) {
-                printVariables();
+            try {
+                String result = responder.process(input);
+                lblResult.setText(result);
+            } catch (Exception e) {
+                lblResult.setText(e.getMessage());
             }
+            //if (result.equals("Variable added successfully") || result.equals("Variable updated successfully")) {
+            printVariables();
+            //}
         }
         txtInputStatement.setText("");
     }//GEN-LAST:event_btnEvaluateActionPerformed
@@ -112,8 +110,8 @@ public class GraphicalUserInterfaceImpl extends javax.swing.JFrame implements Gr
     /*sets variable area with all entered variables*/
     private void printVariables() {
         StringBuilder sb = new StringBuilder();
-        for (Variable v : responder.variables()) {
-            sb.append(String.format("%s = %s\n", v.getName(), v.getValue()));
+        for (EvaluatedVariable v : responder.variables()) {
+            sb.append(String.format("%s = %s,\t%s\n", v.getName(), v.getValue(), v.getType()));
         }
         txtAreaVariables.setText(sb.toString());
     }
@@ -135,20 +133,20 @@ public class GraphicalUserInterfaceImpl extends javax.swing.JFrame implements Gr
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GraphicalUserInterfaceImpl.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SwingGraphicalUserInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GraphicalUserInterfaceImpl.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SwingGraphicalUserInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GraphicalUserInterfaceImpl.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SwingGraphicalUserInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GraphicalUserInterfaceImpl.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SwingGraphicalUserInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GraphicalUserInterfaceImpl(responder).setVisible(true);
+                new SwingGraphicalUserInterface(responder).setVisible(true);
             }
         });
     }

@@ -8,31 +8,35 @@ import com.nvl.parser.variable_definition.VariableDefinitionParser;
 import com.nvl.parser.variable_definition.VariableDefinitionParserImpl;
 import com.nvl.responder.Responder;
 import com.nvl.responder.ResponderImpl;
-import com.nvl.responder.ResponderStub;
 import com.nvl.ui.GraphicalUserInterface;
-import com.nvl.ui.GraphicalUserInterfaceImpl;
+import com.nvl.ui.SwingGraphicalUserInterface;
 import com.nvl.variable.manager.VariableManager;
 import com.nvl.variable.manager.VariableManagerImpl;
-import com.nvl.verifier.InputProcessor;
-import com.nvl.verifier.InputProcessorImpl;
-import com.nvl.verifier.determinator.InputTypeDeterminator;
-import com.nvl.verifier.determinator.InputTypeDeterminatorImpl;
+import com.nvl.verifier.determiner.InputTypeDeterminer;
+import com.nvl.verifier.determiner.InputTypeDeterminerImpl;
+import com.nvl.verifier.processor.RequestProcessor;
+import com.nvl.verifier.processor.RequestProcessorImpl;
+import com.nvl.verifier.validator.InputValidator;
+import com.nvl.verifier.validator.InputValidatorImpl;
 
+/**
+ * Constructs the AssertionVerifier and runs it on a GUI
+ */
 public class GuiAssertionVerifier {
     private GraphicalUserInterface graphicalUserInterface;
 
     public GuiAssertionVerifier() {
-        VariableTypeParser valueParser = new VariableTypeParserImpl();
         VariableManager variableManager = new VariableManagerImpl();
+        VariableTypeParser typeParser = new VariableTypeParserImpl();
         StatementProcessor statementProcessor = new StatementProcessorImpl(variableManager);
         VariableDefinitionParser variableDefinitionParser = new VariableDefinitionParserImpl();
-        InputProcessor inputProcessor = new InputProcessorImpl(statementProcessor, valueParser, variableDefinitionParser, variableManager);
+        RequestProcessor requestProcessor = new RequestProcessorImpl(statementProcessor, typeParser, variableDefinitionParser, variableManager);
+        InputValidator inputValidator = new InputValidatorImpl(variableManager);
 
-        InputTypeDeterminator determinator = new InputTypeDeterminatorImpl();
-        Responder responder = new ResponderImpl(determinator, inputProcessor);
-        responder = new ResponderStub();
+        InputTypeDeterminer typeDeterminer = new InputTypeDeterminerImpl(variableManager);
+        Responder responder = new ResponderImpl(typeDeterminer, requestProcessor, inputValidator);
 
-        graphicalUserInterface = new GraphicalUserInterfaceImpl(responder);
+        graphicalUserInterface = new SwingGraphicalUserInterface(responder);
     }
 
     public void start() {

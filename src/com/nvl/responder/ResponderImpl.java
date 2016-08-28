@@ -1,46 +1,58 @@
 package com.nvl.responder;
 
-import com.nvl.variable.Variable;
-import com.nvl.verifier.determinator.InputTypeDeterminator;
-import com.nvl.verifier.InputProcessor;
-import com.nvl.verifier.determinator.InputType;
+import com.nvl.variable.EvaluatedVariable;
+import com.nvl.verifier.determiner.InputType;
+import com.nvl.verifier.determiner.InputTypeDeterminer;
+import com.nvl.verifier.processor.RequestProcessor;
+import com.nvl.verifier.validator.InputValidator;
 
 import java.util.Set;
 
 public class ResponderImpl implements Responder {
-    private InputTypeDeterminator determinator;
-    private InputProcessor inputProcessor;
+    private InputTypeDeterminer typeDeterminer;
+    private RequestProcessor requestProcessor;
+    private InputValidator inputValidator;
 
     private static final String NEW_VARIABLE_MESSAGE = "Variable added successfully. ";
     private static final String EXISTING_VARIABLE_MESSAGE = "Variable updated successfully. ";
-    private static final String STATEMENT_FORMAT = "The statement is %s.";
+    private static final String STATEMENT_FORMAT = "The statement \"%s\" is %s.";
+    private static final String INVALID_INPUT_MESSAGE = "Invalid input. ";
 
-    public ResponderImpl(InputTypeDeterminator determinator, InputProcessor assertionVerifier) {
-        this.determinator = determinator;
-        this.inputProcessor = assertionVerifier;
+    public ResponderImpl(InputTypeDeterminer typeDeterminer, RequestProcessor requestProcessor, InputValidator inputValidator) {
+        this.typeDeterminer = typeDeterminer;
+        this.requestProcessor = requestProcessor;
+        this.inputValidator = inputValidator;
     }
 
     @Override
     public String process(String userInput) {
-        InputType inputType = determinator.determineInput(userInput);
-        String response = null;
+        InputType inputType = typeDeterminer.determineType(userInput);
+        String response = "";
+
+        validateInput(userInput);
 
         if (inputType == InputType.NEW_VARIABLE) {
-            inputProcessor.addVariable(userInput);
+            requestProcessor.addVariable(userInput);
             response = NEW_VARIABLE_MESSAGE;
         } else if (inputType == InputType.EXISTING_VARIABLE) {
-            inputProcessor.updateVariable(userInput);
+            requestProcessor.updateVariable(userInput);
             response = EXISTING_VARIABLE_MESSAGE;
         } else if (inputType == InputType.STATEMENT) {
-            boolean validStatement = inputProcessor.verifyStatement(userInput);
-            response = String.format(STATEMENT_FORMAT, Boolean.toString(validStatement));
+            boolean validStatement = requestProcessor.verifyStatement(userInput);
+            response = String.format(STATEMENT_FORMAT, userInput, Boolean.toString(validStatement));
         }
 
         return response;
     }
 
+    private void validateInput(String userInput) {
+        if (!inputValidator.isValid(userInput)) {
+            throw new RuntimeException(INVALID_INPUT_MESSAGE);
+        }
+    }
+
     @Override
-    public Set<Variable> variables() {
-        return inputProcessor.variables();
+    public Set<EvaluatedVariable> variables() {
+        return requestProcessor.variables();
     }
 }

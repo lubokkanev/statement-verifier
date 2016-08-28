@@ -1,4 +1,4 @@
-package com.nvl.verifier.determinator;
+package com.nvl.verifier.determiner;
 
 public enum InputType {
     STATEMENT,

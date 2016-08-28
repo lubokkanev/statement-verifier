@@ -1,15 +1,22 @@
 package com.nvl.variable.manager;
 
-import com.nvl.variable.Variable;
+import com.nvl.variable.EvaluatedVariable;
 
 import java.util.Set;
 
+/**
+ * Manages the variables in the current environment
+ */
 public interface VariableManager {
-    void addVariable(Variable variable);
+    void addVariable(EvaluatedVariable variable);
 
     void removeVariable(String name);
 
-    void updateVariable(Variable variable);
+    void updateVariable(EvaluatedVariable variable);
 
-    Set<Variable> variables();
+    boolean containsVariable(String name);
+
+    EvaluatedVariable getVariable(String name);
+
+    Set<EvaluatedVariable> variables();
 }
