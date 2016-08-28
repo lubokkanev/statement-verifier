@@ -2,10 +2,10 @@ package com.nvl.verifier.validator;
 
 import com.nvl.variable.manager.VariableManager;
 
-public class InputValidatorImpl implements InputValidator {
+public class GrammarInputValidator implements InputValidator {
     private VariableManager variableManager;
 
-    public InputValidatorImpl(VariableManager variableManager) {
+    public GrammarInputValidator(VariableManager variableManager) {
         this.variableManager = variableManager;
     }
 

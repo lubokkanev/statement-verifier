@@ -17,7 +17,7 @@ import com.nvl.verifier.determiner.SimpleInputTypeDeterminer;
 import com.nvl.verifier.processor.RequestProcessor;
 import com.nvl.verifier.processor.RequestProcessorImpl;
 import com.nvl.verifier.validator.InputValidator;
-import com.nvl.verifier.validator.InputValidatorImpl;
+import com.nvl.verifier.validator.GrammarInputValidator;
 
 import java.util.HashMap;
 
@@ -33,7 +33,7 @@ public class GuiAssertionVerifier {
         StatementProcessor statementProcessor = new StatementProcessorImpl(variableManager);
         VariableDefinitionParser variableDefinitionParser = new VariableDefinitionParserImpl();
         RequestProcessor requestProcessor = new RequestProcessorImpl(statementProcessor, typeParser, variableDefinitionParser, variableManager);
-        InputValidator inputValidator = new InputValidatorImpl(variableManager);
+        InputValidator inputValidator = new GrammarInputValidator(variableManager);
 
         InputTypeDeterminer typeDeterminer = new SimpleInputTypeDeterminer(variableManager);
         Responder responder = new ResponderImpl(typeDeterminer, requestProcessor, inputValidator);

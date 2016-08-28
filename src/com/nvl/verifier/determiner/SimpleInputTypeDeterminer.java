@@ -2,10 +2,10 @@ package com.nvl.verifier.determiner;
 
 import com.nvl.variable.manager.VariableManager;
 
-public class InputTypeDeterminerImpl implements InputTypeDeterminer {
+public class SimpleInputTypeDeterminer implements InputTypeDeterminer {
     private VariableManager variableManager;
 
-    public InputTypeDeterminerImpl(VariableManager variableManager) {
+    public SimpleInputTypeDeterminer(VariableManager variableManager) {
         this.variableManager = variableManager;
     }
 
