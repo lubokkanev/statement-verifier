@@ -20,7 +20,7 @@ public class VariableTypeParserImpl implements VariableTypeParser {
         return value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false");
     }
 
-    private boolean isNumber(String value) {
+    public static boolean isNumber(String value) {
         try {
             Double.parseDouble(value);
             return true;
