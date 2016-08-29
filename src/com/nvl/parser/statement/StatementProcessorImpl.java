@@ -5,7 +5,7 @@ import com.nvl.variable.manager.VariableManager;
 public class StatementProcessorImpl implements StatementProcessor {
     private VariableManager variableManager;
 
-    private static final String INVALID_INPUT_MESSAGE = "Your caught a bug! Invalid input. ";
+    private static final String INVALID_INPUT_MESSAGE = "You caught a bug! Invalid input. ";
 
     public StatementProcessorImpl(VariableManager variableManager) {
         this.variableManager = variableManager;
