@@ -18,20 +18,41 @@ public class StatementProcessorImpl implements StatementProcessor {
 
     @Override
     public boolean verifyStatement(String statement) {
-        StringBuilder valueStatement = new StringBuilder(statement);        
-       /* for (int i = 0; i < valueStatement.length(); ++i) {
+        StringBuilder valueStatement = new StringBuilder(statement);
+        boolean areQuotes = false;
+        for (int i = 0; i < valueStatement.length(); ++i) {
             char character = valueStatement.charAt(i);
-
+            if(character == '"'){
+                areQuotes = true;
+                do{
+                    i++;
+                    character = valueStatement.charAt(i);
+                }while(character != '"');
+                continue;
+            }
             if (character >= 'a' && character <= 'z' || character >= 'A' && character <= 'Z') {
                 String variable = String.valueOf(character);
-
                 if (!variableManager.containsVariable(variable)) {
                     throw new RuntimeException(INVALID_INPUT_MESSAGE);
                 }
-                valueStatement.replace(i, i + 1, variableManager.getVariable(variable).getValue());
+                valueStatement.deleteCharAt(i);
+                valueStatement.insert(i, variableManager.getVariable(variable).getValue());
+                i--;
+                //valueStatement.replace(i, i + 1, variableManager.getVariable(variable).getValue());
             }
-        }*/
-        return correct(valueStatement);
+        }
+        if(areQuotes){
+            int i = 0;
+            while(i < valueStatement.length()){
+                if(valueStatement.charAt(i) == '"') //because the RPN for strings does not work with Quotes
+                    valueStatement.deleteCharAt(i);
+                else
+                    i++;
+            }
+            return correctForStrings(valueStatement);
+        }
+            
+        return correctForNumbers(valueStatement);  //no quotes -> no strings -> numbers
     }
 
     //creates the Reverse Polish Notation
@@ -124,7 +145,7 @@ public class StatementProcessorImpl implements StatementProcessor {
             }else if(current.equals("*")){    //concatenate the string before the top given amount of times (the top should be the amount)
                 Integer count = Integer.parseInt(stack.pop());   //this should be a number
                 String left = stack.pop();
-                StringBuilder sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder(); 
                 for(int i = 0; i < count; i++){
                     sb.append(left);
                 }
@@ -133,7 +154,7 @@ public class StatementProcessorImpl implements StatementProcessor {
                 stack.push(current);   //current is a string
             } //end of if/else
         } //end of switch
-        return stack.pop();
+        return stack.pop(); 
     } //end of calculateRPNforStrings
 
     //finds the operation of the statement
