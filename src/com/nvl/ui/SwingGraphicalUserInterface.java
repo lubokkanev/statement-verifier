@@ -19,7 +19,8 @@ public class SwingGraphicalUserInterface extends javax.swing.JFrame implements G
     public SwingGraphicalUserInterface(Responder responder) {
         initComponents();
         this.responder = responder;
-        getRootPane().setDefaultButton(btnEvaluate);  
+        getRootPane().setDefaultButton(btnEvaluate);
+        setLocationRelativeTo(null);
     }
 
     /**
