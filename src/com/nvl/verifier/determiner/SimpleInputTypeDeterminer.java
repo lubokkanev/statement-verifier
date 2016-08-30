@@ -26,8 +26,15 @@ public class SimpleInputTypeDeterminer implements InputTypeDeterminer {
             return InputType.NEW_VARIABLE;
         }
     }
-
+    
+    /*tuk stana ibasi kashata :D*/
     private boolean isDefinition(String input) {
-        return input.contains("=") && !input.contains("==");
+        char[] charInput = input.toCharArray();
+        int i = 0;
+        while(charInput[i]!='='  && charInput[i]!='>'  && charInput[i]!='<'  && charInput[i]!='!')  //input must contain atleast =, >, < 
+            i++;
+        if(charInput[i]=='>' || charInput[i]=='<' || charInput[i+1] == '=')  //check if input contains ==, !=, >=, <=
+            return false;
+        return true;  
     }
 }
