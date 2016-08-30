@@ -40,7 +40,8 @@ public class StatementProcessorImpl implements StatementProcessor {
         StringBuilder result = new StringBuilder();
         Stack<Character> operationStack = new Stack<>();
         char[] charInput = input.toCharArray();
-        for (int i = 0; i < charInput.length; i++) {
+        result.append(charInput[0]);
+        for (int i = 1; i < charInput.length; i++) {
             switch (charInput[i]) {
                 case '+':
                 case '-':
@@ -97,7 +98,7 @@ public class StatementProcessorImpl implements StatementProcessor {
     }
 
     private boolean correct(StringBuilder builder) {
-        // TODO: Niki / Lubo      
+        // TODO: Niki / Lubo       
         return true;
     }
 }
