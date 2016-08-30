@@ -19,7 +19,7 @@ public class StatementProcessorImpl implements StatementProcessor {
     @Override
     public boolean verifyStatement(String statement) {
         StringBuilder valueStatement = new StringBuilder(statement);        
-        for (int i = 0; i < valueStatement.length(); ++i) {
+       /* for (int i = 0; i < valueStatement.length(); ++i) {
             char character = valueStatement.charAt(i);
 
             if (character >= 'a' && character <= 'z' || character >= 'A' && character <= 'Z') {
@@ -30,7 +30,7 @@ public class StatementProcessorImpl implements StatementProcessor {
                 }
                 valueStatement.replace(i, i + 1, variableManager.getVariable(variable).getValue());
             }
-        }
+        }*/
         return correct(valueStatement);
     }
 
@@ -109,6 +109,32 @@ public class StatementProcessorImpl implements StatementProcessor {
         }     //end of while
         return stack.pop();   //the result is in the stack(last element)
     }   //end of calculate RPN
+    
+    
+    //calculate the reverse polish notation for strings
+    private String calculateRPNforString(String input){
+        StringTokenizer tokens = new StringTokenizer(input);  //tokenize the input by ' '
+        Stack<String> stack = new Stack<>();  //stack for the numbers
+        while (tokens.hasMoreTokens()) {   //while we have more tokens
+            String current = tokens.nextToken();
+            if(current.equals("+")){       //concatenate the top 2 strings
+                String right = stack.pop();
+                String left = stack.pop();
+                stack.push(left.concat(right));
+            }else if(current.equals("*")){    //concatenate the string before the top given amount of times (the top should be the amount)
+                Integer count = Integer.parseInt(stack.pop());   //this should be a number
+                String left = stack.pop();
+                StringBuilder sb = new StringBuilder();
+                for(int i = 0; i < count; i++){
+                    sb.append(left);
+                }
+                stack.push(sb.toString());
+            }else{
+                stack.push(current);   //current is a string
+            } //end of if/else
+        } //end of switch
+        return stack.pop();
+    } //end of calculateRPNforStrings
 
     //finds the operation of the statement
     private String parseOperation(String input) {
@@ -146,9 +172,13 @@ public class StatementProcessorImpl implements StatementProcessor {
         String leftExpreion = split[0].trim();            //left expresion
         String rightExpresion = split[1].trim();           //right expression
         //TODO parse expresions
-
-        String left = leftExpreion;
-        String right = rightExpresion;
+        
+        String leftRPN = createRPN(leftExpreion);
+        String rightRPN = createRPN(rightExpresion);
+        
+        
+        String left = calculateRPNforString(leftRPN);
+        String right = calculateRPNforString(rightRPN);
         return compare(left, right, operation);
     }  //end of correctForStrings
     
