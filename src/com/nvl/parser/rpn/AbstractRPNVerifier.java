@@ -38,7 +38,7 @@ public abstract class AbstractRPNVerifier implements RPNVerifier{
     protected String parseOperation(String input) {
         char[] charInput = input.toCharArray();
         int i = 0;
-        while (charInput[i] != '=' && charInput[i] != '>' && charInput[i] != '<' && charInput[i] != '!') {  //iterrate while input[i] is not an operation symbol
+        while (charInput[i] != '=' && charInput[i] != '>' && charInput[i] != '<' && (charInput[i] != '!' || charInput[i+1] != '=')) {  //iterrate while input[i] is not an operation symbol
             i++;
         }
         if (charInput[i + 1] != '=') {    //if operation is > or <

@@ -1,5 +1,6 @@
 package com.nvl.parser.statement;
 
+import com.nvl.parser.rpn.BooleanRPNVerifier;
 import com.nvl.parser.rpn.NumberRPNVerifier;
 import com.nvl.parser.rpn.RPNVerifier;
 import com.nvl.parser.rpn.StringRPNVerifier;
@@ -23,9 +24,15 @@ public class StatementProcessorImpl implements StatementProcessor {
     public boolean verifyStatement(String statement) {
         StringBuilder valueStatement = new StringBuilder(statement);
         RPNVerifier verify;
-        boolean areQuotes = false;
+        boolean isBooleanOperation = false, areQuotes = false;
+        String input = statement.toString();
+        if (input.contains("true") || input.contains("false")) {
+            isBooleanOperation = true;
+        }
         for (int i = 0; i < valueStatement.length(); ++i) {
+            
             char character = valueStatement.charAt(i);
+
             if (character == '"') {
                 areQuotes = true;
                 do {
@@ -36,6 +43,20 @@ public class StatementProcessorImpl implements StatementProcessor {
             }
             if (character >= 'a' && character <= 'z' || character >= 'A' && character <= 'Z') {
                 String variable = String.valueOf(character);
+                if (variable.startsWith("t")) {
+                    if (valueStatement.substring(i, i + 4).equals("true")) {
+                        i = i + 3;
+                        isBooleanOperation = true;
+                        continue;
+                    }    
+                }
+                if(variable.startsWith("f")){
+                    if (valueStatement.substring(i, i + 5).equals("false")) {
+                        i = i + 4;
+                        isBooleanOperation = true;
+                        continue;
+                    }
+                }
                 if (!variableManager.containsVariable(variable)) {
                     throw new RuntimeException(INVALID_INPUT_MESSAGE);
                 }
@@ -55,6 +76,10 @@ public class StatementProcessorImpl implements StatementProcessor {
                 }
             }
             verify = new StringRPNVerifier();
+            return verify.correct(valueStatement);
+        }
+        if(isBooleanOperation){
+            verify = new BooleanRPNVerifier();
             return verify.correct(valueStatement);
         }
         verify = new NumberRPNVerifier();
