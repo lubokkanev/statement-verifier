@@ -3,6 +3,7 @@ package com.nvl.variable;
 public enum VariableType {
     STRING,
     NUMBER,
-    BOOLEAN
+    BOOLEAN,
+    ARRAY
     // TODO: NVL - add array type
 }
