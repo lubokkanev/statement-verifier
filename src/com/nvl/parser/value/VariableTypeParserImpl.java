@@ -10,7 +10,7 @@ public class VariableTypeParserImpl implements VariableTypeParser {
         if (isBoolean(variable.getValue())) {
             return new EvaluatedVariable(VariableType.BOOLEAN, String.valueOf(Boolean.parseBoolean(variable.getValue())), variable.getName());
         } else if (isNumber(variable.getValue())) {
-            return new EvaluatedVariable(VariableType.NUMBER, Double.valueOf(variable.getValue()).toString(), variable.getName());
+            return new EvaluatedVariable(VariableType.NUMBER, Integer.valueOf(variable.getValue()).toString(), variable.getName());
         } else {
             return new EvaluatedVariable(VariableType.STRING, variable.getValue(), variable.getName());
         }
@@ -22,7 +22,7 @@ public class VariableTypeParserImpl implements VariableTypeParser {
 
     public static boolean isNumber(String value) {
         try {
-            Double.parseDouble(value);
+            Integer.parseInt(value);
             return true;
         } catch (NumberFormatException e) {
             return false;
