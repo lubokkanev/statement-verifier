@@ -38,7 +38,6 @@ public class ArrayRPNVerifier extends AbstractStringNumberRPNVerifier{
         
         while (tokens.hasMoreTokens()) {   //while we have more tokens
             String current = tokens.nextToken();
-            System.out.println(current);
             
             switch(current){        //swtich to see if current string is operation or string
                 case "+":
