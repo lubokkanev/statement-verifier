@@ -26,7 +26,7 @@ public class ResponderImpl implements Responder {
 
     @Override
     public String process(String userInput) {
-        validateInput(userInput);
+        //validateInput(userInput);
 
         InputType inputType = typeDeterminer.determineType(userInput);
         String response = "";

@@ -45,6 +45,11 @@ public class GrammarInputValidorTest {
         assertTrue(grammarInputValidator.isValid("bool = FALSE"));
     }
 
+    @Test
+    public void testString() {
+        assertTrue(grammarInputValidator.isValid("'this' < 'that'"));
+    }
+
     //!
     @Test
     public void testWrongDefinition() {
@@ -77,8 +82,13 @@ public class GrammarInputValidorTest {
     }
 
     @Test
+    public void testStringBracketsFalse2() {
+        assertFalse(grammarInputValidator.isValid("str * ( str2 + 'abba' ) < 'lqlq' * ( str + 'anna' )"));
+    }
+
+    @Test
     public void testStringBracketsTrue() {
-        assertTrue(grammarInputValidator.isValid("str * ( str2 + 'abba' ) < 'lqlq' * ( str + 'anna' )"));
+        assertTrue(grammarInputValidator.isValid("str * ( a + 5 ) < 'lqlq' * ( 3 + b )"));
     }
 
     @Test
@@ -116,7 +126,6 @@ public class GrammarInputValidorTest {
         assertFalse(grammarInputValidator.isValid("bool || bool1 & "));
     }
 
-
     @Test
     public void testInvalidBoolean() {
         assertFalse(grammarInputValidator.isValid("bool && bool4"));
@@ -124,7 +133,7 @@ public class GrammarInputValidorTest {
 
     @Test
     public void testBrackets() {
-        assertTrue(grammarInputValidator.isValid("a * ( b + 5 ) < 10 * ( c + 1 ) "));
+        assertTrue(grammarInputValidator.isValid("a * ( b + 5 ) < 10 * ( c + 1 )"));
     }
 
     @Test
@@ -135,6 +144,16 @@ public class GrammarInputValidorTest {
     @Test
     public void testDifferentTypes() {
         assertFalse(grammarInputValidator.isValid("a * 55 > 9 + str"));
+    }
+
+    @Test
+    public void testStringPlusNumber() {
+        assertFalse(grammarInputValidator.isValid("a + str < 0"));
+    }
+
+    @Test
+    public void testStringTimesNumber() {
+        assertFalse(grammarInputValidator.isValid("a * str < 0"));
     }
 
     @Test
