@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.nvl.parser.rpn;
+package com.nvl.parser.rpn.verifier;
 
+import com.nvl.parser.rpn.AbstractStringNumberRPNVerifier;
 import com.nvl.parser.value.VariableTypeParserImpl;
 import java.util.Stack;
 import java.util.StringTokenizer;

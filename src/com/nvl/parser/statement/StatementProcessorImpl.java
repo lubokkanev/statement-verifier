@@ -1,10 +1,10 @@
 package com.nvl.parser.statement;
 
-import com.nvl.parser.rpn.ArrayRPNVerifier;
-import com.nvl.parser.rpn.BooleanRPNVerifier;
-import com.nvl.parser.rpn.NumberRPNVerifier;
+import com.nvl.parser.rpn.verifier.ArrayRPNVerifier;
+import com.nvl.parser.rpn.verifier.BooleanRPNVerifier;
+import com.nvl.parser.rpn.verifier.NumberRPNVerifier;
 import com.nvl.parser.rpn.RPNVerifier;
-import com.nvl.parser.rpn.StringRPNVerifier;
+import com.nvl.parser.rpn.verifier.StringRPNVerifier;
 import com.nvl.parser.value.VariableTypeParserImpl;
 import com.nvl.variable.manager.VariableManager;
 import java.util.Queue;
