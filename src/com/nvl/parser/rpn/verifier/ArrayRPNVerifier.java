@@ -122,12 +122,12 @@ public class ArrayRPNVerifier extends AbstractStringNumberRPNVerifier{
             result.append(',');                                                                             //than we separate the elements in the result
         }
         
-        if(leftTokens.hasMoreTokens()){         //if the left array has more elements than the right one
+        while(leftTokens.hasMoreTokens()){         //if the left array has more elements than the right one
             result.append(leftTokens.nextToken());      //add the rest elements to the result
             result.append(',');                         //separate them
         }
         
-        if(rightTokens.hasMoreTokens()){        //if the right array --||--
+        while(rightTokens.hasMoreTokens()){        //if the right array --||--
             result.append(rightTokens.nextToken());
             result.append(',');
         }
