@@ -31,11 +31,16 @@ public abstract class AbstractStringNumberRPNVerifier extends AbstractRPNVerifie
                 case '+':
                 case '-':
                     while (!operationStack.empty()
-                            && (operationStack.peek() == '*' || operationStack.peek() == '/')) {   //if the previous operations in the stack have higher priorities
+                            && (operationStack.peek() == '*' || operationStack.peek() == '/' || operationStack.peek() == '^')) {   //if the previous operations in the stack have higher priorities
                         result.append(' ').append(operationStack.pop());                          // add them to result
                     }
                 case '*':
                 case '/':
+                    while (!operationStack.empty()
+                            && operationStack.peek() == '^') {   //if the previous operations in the stack have higher priorities
+                        result.append(' ').append(operationStack.pop());                          // add them to result
+                    }
+                case '^':
                     result.append(' ');
                 case '(':
                     operationStack.push(charInput[i]);
