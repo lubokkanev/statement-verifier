@@ -24,6 +24,7 @@ public class RequestProcessorImpl implements RequestProcessor {
     }
 
     public void addVariable(String variableDefinition) {
+        // TODO: support complex variable definitions
         UnevaluatedVariable unevaluatedVariable = variableDefinitionParser.parse(variableDefinition);
         EvaluatedVariable evaluatedVariable = variableTypeParser.parse(unevaluatedVariable);
         variableManager.addVariable(evaluatedVariable);
