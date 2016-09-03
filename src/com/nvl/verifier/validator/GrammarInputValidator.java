@@ -8,6 +8,7 @@ import com.nvl.variable.manager.VariableManager;
  */
 public class GrammarInputValidator implements InputValidator {
     private VariableManager variableManager;
+
     private InputTypeMatcher inputTypeMatcher;
     private SplitString splitString;
 
