@@ -27,6 +27,7 @@ public class GrammarInputValidorTest {
         variableManager.addVariable(new EvaluatedVariable(VariableType.BOOLEAN, "TRUE", "bool"));
         variableManager.addVariable(new EvaluatedVariable(VariableType.BOOLEAN, "FALSE", "bool2"));
         variableManager.addVariable(new EvaluatedVariable(VariableType.BOOLEAN, "TRUE", "bool3"));
+
         grammarInputValidator = new GrammarInputValidator(variableManager);
     }
 
@@ -46,6 +47,11 @@ public class GrammarInputValidorTest {
     }
 
     @Test
+    public void testDefinition5() {
+        assertTrue(grammarInputValidator.isValid("bool == ! FALSE"));
+    }
+
+    @Test
     public void testString() {
         assertTrue(grammarInputValidator.isValid("'this' < 'that'"));
     }
@@ -57,8 +63,8 @@ public class GrammarInputValidorTest {
     }
 
     @Test
-    public void testWrongDefinition2() {
-        assertFalse(grammarInputValidator.isValid("bool = false"));
+    public void testDefinition4() {
+        assertTrue(grammarInputValidator.isValid("bool = false"));
     }
 
     @Test
@@ -169,5 +175,15 @@ public class GrammarInputValidorTest {
     @Test
     public void testInvalidInteger() {
         assertFalse(grammarInputValidator.isValid("b + 3 * c == k * ( 8 + a )"));
+    }
+
+    @Test
+    public void testInvalidBracketsUneven() {
+        assertFalse(grammarInputValidator.isValid("((3 + 4) == 7"));
+    }
+
+    @Test
+    public void testInvalidBracketsBadOrder() {
+        assertFalse((grammarInputValidator.isValid(")3( == 3")));
     }
 }
