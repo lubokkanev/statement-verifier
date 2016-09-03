@@ -16,6 +16,10 @@ public class SplitString {
     }
 
     public String getNthElement(int n) {
+        if (n >= splitInput.length) {
+            throw new RuntimeException("It's empty! ");
+        }
+
         return splitInput[n];
     }
 

@@ -53,11 +53,20 @@ public class GrammarInputValidatorTest {
     }
 
     @Test
+    public void testBoolDefinitionExclamationMarkSimple() {
+        assertTrue(grammarInputValidator.isValid("! bool == false"));
+    }
+
+    @Test
+    public void testBoolDefinitionExclamationMark() {
+        assertTrue(grammarInputValidator.isValid("! bool == true || ! false"));
+    }
+
+    @Test
     public void testString() {
         assertTrue(grammarInputValidator.isValid("'this' < 'that'"));
     }
 
-    //!
     @Test
     public void testWrongDefinition() {
         assertFalse(grammarInputValidator.isValid("s = 'this is it'"));
@@ -158,7 +167,7 @@ public class GrammarInputValidatorTest {
         assertFalse(grammarInputValidator.isValid("a + str < 0"));
     }
 
-    @Ignore
+    @Ignore("Test ignored: Not implemented yet")
     @Test
     public void testStringTimesNumber() {
         assertFalse(grammarInputValidator.isValid("a * str < 0"));
@@ -180,6 +189,11 @@ public class GrammarInputValidatorTest {
     }
 
     @Test
+    public void testInvalidBracketsSurroundAll() {
+        assertFalse(grammarInputValidator.isValid("((3 + 4) == 7)"));
+    }
+
+    @Test
     public void testInvalidBracketsUneven() {
         assertFalse(grammarInputValidator.isValid("((3 + 4) == 7"));
     }
@@ -187,5 +201,25 @@ public class GrammarInputValidatorTest {
     @Test
     public void testInvalidBracketsBadOrder() {
         assertFalse((grammarInputValidator.isValid(")3( == 3")));
+    }
+
+    @Test
+    public void testBooleanBrackets() {
+        assertTrue(grammarInputValidator.isValid("( true || false ) && true == false"));
+    }
+
+    @Test
+    public void testBooleanBracketsUneven() {
+        assertFalse(grammarInputValidator.isValid("( true )) == bool"));
+    }
+
+    @Test
+    public void testBooleanDifferentCaseFalse() {
+        assertTrue(grammarInputValidator.isValid("bool == FALse"));
+    }
+
+    @Test
+    public void testBooleanDifferentCaseTrue() {
+        assertTrue(grammarInputValidator.isValid("bool == tRuE"));
     }
 }

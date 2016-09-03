@@ -25,28 +25,15 @@ public class GrammarInputValidator implements InputValidator {
             return parseSimpleDefinition();
         }
 
-        while (!splitString.isEmpty() && splitString.getNthElement(splitString.getPosition()).equals("(")) // skipping brackets
-        {
-            splitString.nextPosition();
-        }
-
-        if (splitString.isEmpty()) {
-            return false;
-        }
-
-        splitString.setPosition(0); // going back to the beginning
-
         boolean isVariable = variableManager.containsVariable(splitString.getCurrentElement());
-
         VariableType type = null;
-
         if (isVariable) {
             type = variableManager.getVariable(splitString.getCurrentElement()).getType();
         }
 
-        if (isExtendedBoolean(splitString.getCurrentElement(), isVariable, type)) {
+        if (isExtendedBoolean(isVariable, type)) {
             if (parseBoolExpression()) {
-                parseBoolOperation();
+                parseBoolComparison();
             }
         } else {
             if (parseNotBool()) {
@@ -55,6 +42,15 @@ public class GrammarInputValidator implements InputValidator {
         }
 
         return splitString.isEmpty();
+    }
+
+    private boolean parseBoolComparison() {
+        if (!splitString.isEmpty() && splitString.getCurrentElement().equals("==")) {
+            splitString.nextPosition();
+            return parseBoolExpression();
+        }
+
+        return false;
     }
 
     private boolean parseSimpleDefinition() {
@@ -80,8 +76,15 @@ public class GrammarInputValidator implements InputValidator {
         return split.length != 2 || !(split[0].contains("{") && !split[1].contains("{") || split[0].contains("'") && !split[1].contains("'"));
     }
 
-    private boolean isExtendedBoolean(String current, boolean isVariable, VariableType type) {
-        return current.equals("!") || isBoolean(current, isVariable, type);
+    private boolean isExtendedBoolean(boolean isVariable, VariableType type) {
+        while (splitString.getCurrentElement().equals("(")) {
+            splitString.nextPosition();
+        }
+
+        boolean result = splitString.getCurrentElement().equals("!") || isBoolean(splitString.getCurrentElement(), isVariable, type);
+        splitString.setPosition(0);
+
+        return result;
     }
 
     private boolean isBoolean(String current, boolean isVariable, VariableType type) {
@@ -109,7 +112,7 @@ public class GrammarInputValidator implements InputValidator {
         int startingPosition = splitString.getPosition();
 
         while (splitString.getCurrentElement().equals("(")) {
-            splitString.setPosition(splitString.getPosition() + 1);
+            splitString.nextPosition();
         }
 
         String afterBraces = splitString.getCurrentElement();
@@ -202,10 +205,6 @@ public class GrammarInputValidator implements InputValidator {
     }
 
     private boolean parseComparison() {
-        if (splitString.isEmpty()) {
-            return false;
-        }
-
         if (!splitString.isEmpty() && isComparisonSymbol(splitString.getCurrentElement())) {
             splitString.setPosition(splitString.getPosition() + 1);
             return parseNotBool();
@@ -311,7 +310,7 @@ public class GrammarInputValidator implements InputValidator {
             return false;
         }
 
-        String current = splitString.getNthElement(splitString.getPosition());
+        String current = splitString.getCurrentElement();
         if (current.equals("!")) {
             splitString.setPosition(splitString.getPosition() + 1);
             return parseBoolExpression();
@@ -320,7 +319,9 @@ public class GrammarInputValidator implements InputValidator {
             splitString.setPosition(splitString.getPosition() + 1);
             return parseBoolOperation();
         } else if (current.equals("(")) {
+            splitString.nextPosition();
             if (parseBoolExpression() && splitString.getNthElement(splitString.getPosition()).equals(")")) {
+                splitString.nextPosition();
                 return parseBoolOperation();
             }
         }
