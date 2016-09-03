@@ -129,7 +129,7 @@ public class GrammarInputValidator implements InputValidator {
             return parseIntExpression();
         } else if (isString(afterBraces, isVariable, type)) {
             return parseStringExpression();
-        } else if (isArray(afterBraces, isVariable, type)) {
+        } else if (isArray(afterBraces)) {
             return parseArrayExpression();
         }
 
@@ -150,6 +150,9 @@ public class GrammarInputValidator implements InputValidator {
                 splitString.setPosition(splitString.getPosition() + 1);
                 return parseArrayOperation();
             }
+        } else if (isArray(current)) {
+            splitString.setPosition(splitString.getPosition() + 1);
+            return parseArrayOperation();
         }
 
         return false;
@@ -162,7 +165,12 @@ public class GrammarInputValidator implements InputValidator {
 
         String current = splitString.getCurrentElement();
 
-        return !(current.equals("+") || current.equals("*")) || parseArrayOrNumber();
+        if (current.equals("+") || current.equals("*")) {
+            splitString.nextPosition();
+            return parseArrayOrNumber();
+        }
+
+        return true;
     }
 
     private boolean parseArrayOrNumber() {
@@ -170,14 +178,7 @@ public class GrammarInputValidator implements InputValidator {
             return false;
         }
 
-        boolean isVariable = variableManager.containsVariable(splitString.getCurrentElement());
-        VariableType type = null;
-
-        if (isVariable) {
-            type = variableManager.getVariable(splitString.getCurrentElement()).getType();
-        }
-
-        if (isArray(splitString.getCurrentElement(), isVariable, type)) {
+        if (isArray(splitString.getCurrentElement())) {
             return parseArrayExpression();
         } else if (isNumber(splitString.getCurrentElement())) {
             return parseIntExpression();
@@ -190,18 +191,33 @@ public class GrammarInputValidator implements InputValidator {
         return current.matches("'\\w+'") || (isVariable && type == VariableType.STRING);
     }
 
-    private boolean isArray(String current, boolean isVariable, VariableType type) {
-        return current.matches("\\{\\d+(,\\d+)*\\}") || isVariable && type == VariableType.ARRAY;
+    private boolean isArray(String current) {
+        return isArrayValue(current) || isArrayVariable(current);
+    }
+
+    private boolean isArrayVariable(String currentElement) {
+        boolean isVariable = variableManager.containsVariable(currentElement);
+        VariableType type = null;
+
+        if (isVariable) {
+            type = variableManager.getVariable(currentElement).getType();
+        }
+
+        return isVariable && type == VariableType.ARRAY;
+    }
+
+    private boolean isArrayValue(String current) {
+        return current.matches("\\{\\d+(,\\d+)*\\}");
     }
 
     private boolean isValidRightSide(String stringToCheck) {
         return stringToCheck.matches("'\\w+'") || stringToCheck.matches("\\d+") || stringToCheck.equalsIgnoreCase("FALSE") || stringToCheck.equalsIgnoreCase("TRUE") ||
-                stringToCheck.matches("\\{\\d+(,\\d+)*\\}");
+                isArrayValue(stringToCheck);
         // TODO: Lubo - refactor
     }
 
     private boolean matchesType(VariableType currentType, String currentElement) {
-        return isString(currentElement, true, currentType) || isBoolean(currentElement, true, currentType) || isNumber(currentElement) || isArray(currentElement, true, currentType);
+        return isString(currentElement, true, currentType) || isBoolean(currentElement, true, currentType) || isNumber(currentElement) || isArray(currentElement);
     }
 
     private boolean parseComparison() {

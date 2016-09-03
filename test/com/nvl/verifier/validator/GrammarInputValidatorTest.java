@@ -28,6 +28,8 @@ public class GrammarInputValidatorTest {
         variableManager.addVariable(new EvaluatedVariable(VariableType.BOOLEAN, "TRUE", "bool"));
         variableManager.addVariable(new EvaluatedVariable(VariableType.BOOLEAN, "FALSE", "bool2"));
         variableManager.addVariable(new EvaluatedVariable(VariableType.BOOLEAN, "TRUE", "bool3"));
+        variableManager.addVariable(new EvaluatedVariable(VariableType.ARRAY, "{1,2,3}", "arr1"));
+        variableManager.addVariable(new EvaluatedVariable(VariableType.ARRAY, "{11,22,33}", "arr2"));
 
         grammarInputValidator = new GrammarInputValidator(variableManager);
     }
@@ -129,6 +131,11 @@ public class GrammarInputValidatorTest {
 
     @Test
     public void testInvalidString() {
+        assertTrue(grammarInputValidator.isValid("str + ( 3 * str2 ) == str2 * ( 8 + a )"));
+    }
+
+    @Test
+    public void testInvalidStringMissingVariable() {
         assertFalse(grammarInputValidator.isValid("str + 3 * str2 == str3 * ( 8 + a )"));
     }
 
@@ -221,5 +228,56 @@ public class GrammarInputValidatorTest {
     @Test
     public void testBooleanDifferentCaseTrue() {
         assertTrue(grammarInputValidator.isValid("bool == tRuE"));
+    }
+
+    @Test
+    public void testArrayAdditionalComma() {
+        assertFalse(grammarInputValidator.isValid("arr = {1,2,3,}"));
+    }
+
+    @Test
+    public void testArrayInvalidElement() {
+        assertFalse(grammarInputValidator.isValid("arr = {1,2,3,a}"));
+    }
+
+    @Test
+    public void testArray() {
+        assertTrue(grammarInputValidator.isValid("arr = {1,2,3}"));
+    }
+
+    @Test
+    public void testArrayNumberAddition() {
+        assertTrue(grammarInputValidator.isValid("arr1 + 5 == {12,24,36}"));
+    }
+
+    @Ignore("Test ignored: Not implemented yet")
+    @Test
+    public void testArrayAdditionEqualsNumber() {
+        assertFalse(grammarInputValidator.isValid("arr1 + arr2 == 5"));
+    }
+
+    @Test
+    public void testArrayAdditionLessOrEqual() {
+        assertTrue(grammarInputValidator.isValid("arr1 + arr2 <= {1,2,3}"));
+    }
+
+    @Test
+    public void testArrayMultiply() {
+        assertTrue(grammarInputValidator.isValid("arr1 * arr2 > {12,24,36}"));
+    }
+
+    @Test
+    public void testArrayAddition() {
+        assertTrue(grammarInputValidator.isValid("arr1 + arr2 == {12,24,36}"));
+    }
+
+    @Test
+    public void testBoolInequality() {
+        assertFalse(grammarInputValidator.isValid("true < bool"));
+    }
+
+    @Test
+    public void testArrayValidInput() {
+        assertTrue(grammarInputValidator.isValid("( 5 * arr1 ) + {8,9,0} != {12,24,36} * ( arr2 + 5 )"));
     }
 }
