@@ -146,6 +146,21 @@ public class GrammarInputValidatorTest {
     }
 
     @Test
+    public void testIntegerIncomplete() {
+        assertFalse(grammarInputValidator.isValid("5 + 6 + 7"));
+    }
+
+    @Test
+    public void testInvalidVariableName() {
+        assertFalse(grammarInputValidator.isValid("a5s = 5"));
+    }
+
+    @Test
+    public void testVariableTypeChange() {
+        assertFalse(grammarInputValidator.isValid("a = 'str'"));
+    }
+
+    @Test
     public void testIsInvalid7() {
         assertFalse(grammarInputValidator.isValid("bool || bool1 & "));
     }
@@ -175,7 +190,6 @@ public class GrammarInputValidatorTest {
         assertFalse(grammarInputValidator.isValid("a + str < 0"));
     }
 
-    @Ignore("Test ignored: Not implemented yet")
     @Test
     public void testStringTimesNumber() {
         assertFalse(grammarInputValidator.isValid("a * str < 0"));
@@ -251,7 +265,6 @@ public class GrammarInputValidatorTest {
         assertTrue(grammarInputValidator.isValid("arr1 + 5 == {12,24,36}"));
     }
 
-    @Ignore("Test ignored: Not implemented yet")
     @Test
     public void testArrayAdditionEqualsNumber() {
         assertFalse(grammarInputValidator.isValid("arr1 + arr2 == 5"));
@@ -275,6 +288,11 @@ public class GrammarInputValidatorTest {
     @Test
     public void testBoolInequality() {
         assertFalse(grammarInputValidator.isValid("true < bool"));
+    }
+
+    @Test
+    public void testIncomplete() {
+        assertFalse(grammarInputValidator.isValid("5 + 2 <="));
     }
 
     @Test

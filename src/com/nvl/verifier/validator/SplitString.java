@@ -1,7 +1,5 @@
 package com.nvl.verifier.validator;
 
-// new
-
 public class SplitString {
     private String[] splitInput;
     private int position;
