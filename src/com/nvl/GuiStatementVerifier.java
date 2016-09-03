@@ -1,7 +1,7 @@
 package com.nvl;
 
-import com.nvl.parser.statement.StatementProcessor;
-import com.nvl.parser.statement.StatementProcessorImpl;
+import com.nvl.parser.statement.StatementVerifier;
+import com.nvl.parser.statement.StatementVerifierImpl;
 import com.nvl.parser.value.VariableTypeParser;
 import com.nvl.parser.value.VariableTypeParserImpl;
 import com.nvl.parser.variable_definition.VariableDefinitionParser;
@@ -30,9 +30,9 @@ public class GuiStatementVerifier {
     public GuiStatementVerifier() {
         VariableManager variableManager = new MapVariableManager(new HashMap<>());
         VariableTypeParser typeParser = new VariableTypeParserImpl();
-        StatementProcessor statementProcessor = new StatementProcessorImpl(variableManager);
+        StatementVerifier statementVerifier = new StatementVerifierImpl(variableManager);
         VariableDefinitionParser variableDefinitionParser = new VariableDefinitionParserImpl();
-        RequestProcessor requestProcessor = new RequestProcessorImpl(statementProcessor, typeParser, variableDefinitionParser, variableManager);
+        RequestProcessor requestProcessor = new RequestProcessorImpl(statementVerifier, typeParser, variableDefinitionParser, variableManager);
         InputValidator inputValidator = new GrammarInputValidator(variableManager);
 
         InputTypeDeterminer typeDeterminer = new SimpleInputTypeDeterminer(variableManager);

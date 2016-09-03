@@ -1,7 +1,7 @@
 package com.nvl;
 
-import com.nvl.parser.statement.StatementProcessor;
-import com.nvl.parser.statement.StatementProcessorImpl;
+import com.nvl.parser.statement.StatementVerifier;
+import com.nvl.parser.statement.StatementVerifierImpl;
 import com.nvl.parser.value.VariableTypeParser;
 import com.nvl.parser.value.VariableTypeParserImpl;
 import com.nvl.parser.variable_definition.VariableDefinitionParser;
@@ -31,10 +31,10 @@ public class GuiAssertionVerifierTest {
         variableManager = new MapVariableManager(new HashMap<>());
 
         InputTypeDeterminer typeDeterminer = new SimpleInputTypeDeterminer(variableManager);
-        StatementProcessor statementProcessor = new StatementProcessorImpl(variableManager);
+        StatementVerifier statementVerifier = new StatementVerifierImpl(variableManager);
         VariableTypeParser variableTypeParser = new VariableTypeParserImpl();
         VariableDefinitionParser variableDefinitionParser = new VariableDefinitionParserImpl();
-        requestProcessor = new RequestProcessorImpl(statementProcessor, variableTypeParser, variableDefinitionParser, variableManager);
+        requestProcessor = new RequestProcessorImpl(statementVerifier, variableTypeParser, variableDefinitionParser, variableManager);
         InputValidator inputValidator = new GrammarInputValidator(variableManager);
 
         responder = new ResponderImpl(typeDeterminer, requestProcessor, inputValidator);
