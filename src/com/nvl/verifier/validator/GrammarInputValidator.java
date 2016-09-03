@@ -25,13 +25,7 @@ public class GrammarInputValidator implements InputValidator {
             return parseSimpleDefinition();
         }
 
-        boolean isVariable = variableManager.containsVariable(splitString.getCurrentElement());
-        VariableType type = null;
-        if (isVariable) {
-            type = variableManager.getVariable(splitString.getCurrentElement()).getType();
-        }
-
-        if (isExtendedBoolean(isVariable, type)) {
+        if (isExtendedBoolean()) {
             if (parseBoolExpression()) {
                 parseBoolComparison();
             }
@@ -58,7 +52,7 @@ public class GrammarInputValidator implements InputValidator {
             return isValidRightSide(splitString.getNthElement(2));
         } else {
             VariableType type = variableManager.getVariable(splitString.getNthElement(0)).getType();
-            return matchesType(type, splitString.getNthElement(2));
+            return matchesType(splitString.getNthElement(2));
         }
     }
 
@@ -76,19 +70,25 @@ public class GrammarInputValidator implements InputValidator {
         return split.length != 2 || !(split[0].contains("{") && !split[1].contains("{") || split[0].contains("'") && !split[1].contains("'"));
     }
 
-    private boolean isExtendedBoolean(boolean isVariable, VariableType type) {
-        while (splitString.getCurrentElement().equals("(")) {
-            splitString.nextPosition();
-        }
+    private boolean isExtendedBoolean() {
+        skipBrackets();
 
-        boolean result = splitString.getCurrentElement().equals("!") || isBoolean(splitString.getCurrentElement(), isVariable, type);
+        boolean result = splitString.getCurrentElement().equals("!") || isBoolean(splitString.getCurrentElement());
         splitString.setPosition(0);
 
         return result;
     }
 
-    private boolean isBoolean(String current, boolean isVariable, VariableType type) {
-        return current.equalsIgnoreCase("FALSE") || current.equalsIgnoreCase("TRUE") || (isVariable && type == VariableType.BOOLEAN);
+    private void skipBrackets() {
+        while (splitString.getCurrentElement().equals("(")) {
+            splitString.nextPosition();
+        }
+    }
+
+    private boolean isBoolean(String current) {
+        boolean isVariable = variableManager.containsVariable(current);
+
+        return current.equalsIgnoreCase("FALSE") || current.equalsIgnoreCase("TRUE") || (isVariable && variableManager.getVariable(current).getType() == VariableType.BOOLEAN);
     }
 
     private boolean isNumber(String element) {
@@ -110,24 +110,13 @@ public class GrammarInputValidator implements InputValidator {
 
     private boolean parseNotBool() {
         int startingPosition = splitString.getPosition();
-
-        while (splitString.getCurrentElement().equals("(")) {
-            splitString.nextPosition();
-        }
-
+        skipBrackets();
         String afterBraces = splitString.getCurrentElement();
         splitString.setPosition(startingPosition);
 
-        boolean isVariable = variableManager.containsVariable(afterBraces);
-        VariableType type = null;
-
-        if (isVariable) {
-            type = variableManager.getVariable(afterBraces).getType();
-        }
-
         if (isNumber(afterBraces)) {
             return parseIntExpression();
-        } else if (isString(afterBraces, isVariable, type)) {
+        } else if (isString(afterBraces)) {
             return parseStringExpression();
         } else if (isArray(afterBraces)) {
             return parseArrayExpression();
@@ -146,7 +135,7 @@ public class GrammarInputValidator implements InputValidator {
         if (current.equals("(")) {
             splitString.setPosition(splitString.getPosition() + 1);
 
-            if (parseArrayExpression() && current.equals(")")) {
+            if (parseArrayExpression() && splitString.getCurrentElement().equals(")")) {
                 splitString.setPosition(splitString.getPosition() + 1);
                 return parseArrayOperation();
             }
@@ -178,17 +167,24 @@ public class GrammarInputValidator implements InputValidator {
             return false;
         }
 
+        int startingPosition = splitString.getPosition();
+        skipBrackets();
+
         if (isArray(splitString.getCurrentElement())) {
+            splitString.setPosition(startingPosition);
             return parseArrayExpression();
         } else if (isNumber(splitString.getCurrentElement())) {
+            splitString.setPosition(startingPosition);
             return parseIntExpression();
         }
 
         return false;
     }
 
-    private boolean isString(String current, boolean isVariable, VariableType type) {
-        return current.matches("'\\w+'") || (isVariable && type == VariableType.STRING);
+    private boolean isString(String current) {
+        boolean isVariable = variableManager.containsVariable(current);
+
+        return current.matches("'\\w+'") || (isVariable && variableManager.getVariable(current).getType() == VariableType.STRING);
     }
 
     private boolean isArray(String current) {
@@ -216,8 +212,8 @@ public class GrammarInputValidator implements InputValidator {
         // TODO: Lubo - refactor
     }
 
-    private boolean matchesType(VariableType currentType, String currentElement) {
-        return isString(currentElement, true, currentType) || isBoolean(currentElement, true, currentType) || isNumber(currentElement) || isArray(currentElement);
+    private boolean matchesType(String currentElement) {
+        return isString(currentElement) || isBoolean(currentElement) || isNumber(currentElement) || isArray(currentElement);
     }
 
     private boolean parseComparison() {
@@ -295,7 +291,7 @@ public class GrammarInputValidator implements InputValidator {
                 type = variableManager.getVariable(current).getType();
             }
 
-            if (isString(current, isVariable, type)) {
+            if (isString(current)) {
                 splitString.setPosition(splitString.getPosition() + 1);
                 return parseStringOperation();
             }
@@ -330,8 +326,7 @@ public class GrammarInputValidator implements InputValidator {
         if (current.equals("!")) {
             splitString.setPosition(splitString.getPosition() + 1);
             return parseBoolExpression();
-        } else if (current.equalsIgnoreCase("TRUE") || current.equalsIgnoreCase("FALSE") ||
-                (variableManager.containsVariable(current) && variableManager.getVariable(current).getType() == VariableType.BOOLEAN)) {
+        } else if (isBoolean(current)) {
             splitString.setPosition(splitString.getPosition() + 1);
             return parseBoolOperation();
         } else if (current.equals("(")) {
