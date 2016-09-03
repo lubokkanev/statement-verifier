@@ -6,7 +6,7 @@ import com.nvl.variable.manager.VariableManager;
 public class GrammarInputValidator implements InputValidator {
     private VariableManager variableManager;
 
-    private SplitString splitString; // new
+    private SplitString splitString;
 
     public GrammarInputValidator(VariableManager variableManager) {
         this.variableManager = variableManager;
@@ -15,106 +15,118 @@ public class GrammarInputValidator implements InputValidator {
     @Override
     // everything is separated by space; '&&', '||' and '==' are not
     public boolean isValid(String input) {
-        if (!matchingTypes(input)) {
-            return false;
-        }
-
         splitString = new SplitString(input);
 
-        if (splitString.getSplitInput().length < 3) {
+        if (!sidesMatch(input) || splitString.getSplitInput().length < 3) {
             return false;
         }
 
-        if (splitString.getSplitInput().length == 3 && splitString.getNthElement(1).equals("=")) {
-            if (!variableManager.containsVariable(splitString.getNthElement(0))) {
-                return isValidRightSide(splitString.getNthElement(2));
-            } else {
-                VariableType type = variableManager.getVariable(splitString.getNthElement(0)).getType();
-                return compareType(type, splitString.getNthElement(2));
-            }
+        if (isSimpleDefinition()) {
+            return parseSimpleDefinition();
         }
 
-        while (!isEmpty() && splitString.getNthElement(splitString.getPosition()).equals("(")) // skipping brackets
+        while (!splitString.isEmpty() && splitString.getNthElement(splitString.getPosition()).equals("(")) // skipping brackets
         {
-            splitString.setPosition(splitString.getPosition() + 1);
+            splitString.nextPosition();
         }
 
-        if (isEmpty()) {
+        if (splitString.isEmpty()) {
             return false;
         }
 
-        String current = splitString.getNthElement(splitString.getPosition());
         splitString.setPosition(0); // going back to the beginning
 
-        boolean isVariable = variableManager.containsVariable(current);
+        boolean isVariable = variableManager.containsVariable(splitString.getCurrentElement());
 
         VariableType type = null;
 
         if (isVariable) {
-            type = variableManager.getVariable(current).getType();
+            type = variableManager.getVariable(splitString.getCurrentElement()).getType();
         }
 
-        if (isNumber(current, isVariable, type) || isString(current, isVariable, type) || isArray(current, isVariable, type)) {
-            if (parseNotBool(current)) {
-                parseComparison();
-            }
-        } else if (isBoolean(current, isVariable, type)) {
+        if (isExtendedBoolean(splitString.getCurrentElement(), isVariable, type)) {
             if (parseBoolExpression()) {
                 parseBoolOperation();
             }
+        } else {
+            if (parseNotBool()) {
+                parseComparison();
+            }
         }
 
-        return isEmpty();
+        return splitString.isEmpty();
     }
 
-    private boolean matchingTypes(String input) {
+    private boolean parseSimpleDefinition() {
+        if (!variableManager.containsVariable(splitString.getNthElement(0))) {
+            return isValidRightSide(splitString.getNthElement(2));
+        } else {
+            VariableType type = variableManager.getVariable(splitString.getNthElement(0)).getType();
+            return matchesType(type, splitString.getNthElement(2));
+        }
+    }
+
+    private boolean isSimpleDefinition() {
+        return splitString.getSplitInput().length == 3 && splitString.getNthElement(1).equals("=");
+    }
+
+    private boolean sidesMatch(String input) {
         String[] split = input.split("[=<>]");
 
         if (input.contains("==")) {
             split = input.split("==");
         }
 
-        if (split.length != 2) {
-            return true;
-        }
+        return split.length != 2 || !(split[0].contains("{") && !split[1].contains("{") || split[0].contains("'") && !split[1].contains("'"));
+    }
 
-        if (split[0].contains("{") && !split[1].contains("{") || split[0].contains("'") && !split[1].contains("'")) {
-            return false;
-        }
-
-        return true;
+    private boolean isExtendedBoolean(String current, boolean isVariable, VariableType type) {
+        return current.equals("!") || isBoolean(current, isVariable, type);
     }
 
     private boolean isBoolean(String current, boolean isVariable, VariableType type) {
-        return current.equalsIgnoreCase("FALSE") || current.equalsIgnoreCase("TRUE") || current.equals("!") || (isVariable && type == VariableType.BOOLEAN);
+        return current.equalsIgnoreCase("FALSE") || current.equalsIgnoreCase("TRUE") || (isVariable && type == VariableType.BOOLEAN);
     }
 
-    private boolean isNumber(String current, boolean isVariable, VariableType type) {
-        return current.matches("\\d+") || (isVariable && type == VariableType.NUMBER);
+    private boolean isNumber(String element) {
+        return isNumberValue(element) || isNumberVariable(element);
     }
 
-    private boolean parseNotBool(String current) {
-        int startingPosition = splitString.getPosition();
+    private boolean isNumberValue(String element) {
+        return element.matches("\\d+");
+    }
 
-        while (current.equals("(")) {
-            splitString.setPosition(splitString.getPosition() + 1);
-            current = splitString.getNthElement(splitString.getPosition());
+    private boolean isNumberVariable(String element) {
+        if (variableManager.containsVariable(element)) {
+            VariableType type = variableManager.getVariable(element).getType();
+            return type == VariableType.NUMBER;
         }
 
+        return false;
+    }
+
+    private boolean parseNotBool() {
+        int startingPosition = splitString.getPosition();
+
+        while (splitString.getCurrentElement().equals("(")) {
+            splitString.setPosition(splitString.getPosition() + 1);
+        }
+
+        String afterBraces = splitString.getCurrentElement();
         splitString.setPosition(startingPosition);
 
-        boolean isVariable = variableManager.containsVariable(current);
+        boolean isVariable = variableManager.containsVariable(afterBraces);
         VariableType type = null;
 
         if (isVariable) {
-            type = variableManager.getVariable(current).getType();
+            type = variableManager.getVariable(afterBraces).getType();
         }
 
-        if (isNumber(current, isVariable, type)) {
+        if (isNumber(afterBraces)) {
             return parseIntExpression();
-        } else if (isString(current, isVariable, type)) {
+        } else if (isString(afterBraces, isVariable, type)) {
             return parseStringExpression();
-        } else if (isArray(current, isVariable, type)) {
+        } else if (isArray(afterBraces, isVariable, type)) {
             return parseArrayExpression();
         }
 
@@ -122,11 +134,11 @@ public class GrammarInputValidator implements InputValidator {
     }
 
     private boolean parseArrayExpression() {
-        if (isEmpty()) {
+        if (splitString.isEmpty()) {
             return false;
         }
 
-        String current = splitString.getNthElement(splitString.getPosition());
+        String current = splitString.getCurrentElement();
 
         if (current.equals("(")) {
             splitString.setPosition(splitString.getPosition() + 1);
@@ -141,37 +153,30 @@ public class GrammarInputValidator implements InputValidator {
     }
 
     private boolean parseArrayOperation() {
-        if (isEmpty()) {
+        if (splitString.isEmpty()) {
             return true;
         }
 
-        String current = splitString.getNthElement(splitString.getPosition());
+        String current = splitString.getCurrentElement();
 
-        if (current.equals("+") || current.equals("*")) {
-            return parseArrayOrNumber();
-        }
-
-        return true;
+        return !(current.equals("+") || current.equals("*")) || parseArrayOrNumber();
     }
 
     private boolean parseArrayOrNumber() {
-        if (isEmpty()) {
+        if (splitString.isEmpty()) {
             return false;
         }
 
-        String current = splitString.getNthElement(splitString.getPosition());
-
-        boolean isVariable = variableManager.containsVariable(current);
-
+        boolean isVariable = variableManager.containsVariable(splitString.getCurrentElement());
         VariableType type = null;
 
         if (isVariable) {
-            type = variableManager.getVariable(current).getType();
+            type = variableManager.getVariable(splitString.getCurrentElement()).getType();
         }
 
-        if (isArray(current, isVariable, type)) {
+        if (isArray(splitString.getCurrentElement(), isVariable, type)) {
             return parseArrayExpression();
-        } else if (isNumber(current, isVariable, type)) {
+        } else if (isNumber(splitString.getCurrentElement())) {
             return parseIntExpression();
         }
 
@@ -182,51 +187,28 @@ public class GrammarInputValidator implements InputValidator {
         return current.matches("'\\w+'") || (isVariable && type == VariableType.STRING);
     }
 
-    private boolean isArray(String current, boolean isVariable, VariableType currentType) {
-        return current.matches("\\{\\d+(,\\d+)*\\}") || isVariable && currentType == VariableType.ARRAY;
+    private boolean isArray(String current, boolean isVariable, VariableType type) {
+        return current.matches("\\{\\d+(,\\d+)*\\}") || isVariable && type == VariableType.ARRAY;
     }
 
     private boolean isValidRightSide(String stringToCheck) {
         return stringToCheck.matches("'\\w+'") || stringToCheck.matches("\\d+") || stringToCheck.equalsIgnoreCase("FALSE") || stringToCheck.equalsIgnoreCase("TRUE") ||
                 stringToCheck.matches("\\{\\d+(,\\d+)*\\}");
+        // TODO: Lubo - refactor
     }
 
-    private boolean compareType(VariableType type, String string) {
-        if (type == VariableType.STRING && string.matches("'\\w+'")) {
-            return true;
-        } else if (type == VariableType.BOOLEAN && (string.equals("FALSE") || string.equals("TRUE"))) {
-            return true;
-        } else if (type == VariableType.NUMBER && string.matches("\\d+")) {
-            return true;
-        } else if (type == VariableType.ARRAY && string.matches("\\{\\d+(,\\d+)*\\}")) {
-            return true;
-        }
-
-        return false;
+    private boolean matchesType(VariableType currentType, String currentElement) {
+        return isString(currentElement, true, currentType) || isBoolean(currentElement, true, currentType) || isNumber(currentElement) || isArray(currentElement, true, currentType);
     }
 
-    private boolean isEmpty() {
-        return splitString.getPosition() == splitString.getSplitInput().length;
-    }
-
-    private boolean parseComparison() // debuuug
-    {
-        if (isEmpty()) {
+    private boolean parseComparison() {
+        if (splitString.isEmpty()) {
             return false;
         }
-        String current = splitString.getNthElement(splitString.getPosition());
 
-        if (!isEmpty() && isComparisonSymbol(current)) {
+        if (!splitString.isEmpty() && isComparisonSymbol(splitString.getCurrentElement())) {
             splitString.setPosition(splitString.getPosition() + 1);
-            current = splitString.getNthElement(splitString.getPosition());
-
-            boolean isVariable = variableManager.containsVariable(current);
-            VariableType type = null;
-            if (isVariable) {
-                type = variableManager.getVariable(current).getType();
-            }
-
-            return parseNotBool(current);
+            return parseNotBool();
         }
 
         return false;
@@ -236,14 +218,13 @@ public class GrammarInputValidator implements InputValidator {
         return current.equals("==") || current.equals(">") || current.equals("<") || current.equals("<=") || current.equals(">=") || current.equals("!=");
     }
 
-    private boolean parseIntExpression() // deeebuuuug
-    {
-        if (isEmpty()) {
+    private boolean parseIntExpression() {
+        if (splitString.isEmpty()) {
             return false;
         }
 
-        String current = splitString.getNthElement(splitString.getPosition());
-        if (current.equals("(")) {
+        String currentElement = splitString.getNthElement(splitString.getPosition());
+        if (currentElement.equals("(")) {
             splitString.setPosition(splitString.getPosition() + 1);
             if (parseIntExpression() && splitString.getNthElement(splitString.getPosition()).equals(")")) // !!
             {
@@ -251,14 +232,7 @@ public class GrammarInputValidator implements InputValidator {
                 return parseIntOperation();
             }
         } else {
-            boolean isVariable = variableManager.containsVariable(current);
-            VariableType type = null;
-
-            if (isVariable) {
-                type = variableManager.getVariable(current).getType();
-            }
-
-            if (isNumber(current, isVariable, type)) {
+            if (isNumber(currentElement)) {
                 splitString.setPosition(splitString.getPosition() + 1);
                 return parseIntOperation();
             }
@@ -268,20 +242,16 @@ public class GrammarInputValidator implements InputValidator {
     }
 
     private boolean parseIntOperation() {
-        if (isEmpty()) {
+        if (splitString.isEmpty()) {
             return true;
         }
 
-        String current = splitString.getNthElement(splitString.getPosition());
-
-        if (current.equals("*")) {
+        if (splitString.getCurrentElement().equals("*")) {
             splitString.setPosition(splitString.getPosition() + 1);
-            current = splitString.getNthElement(splitString.getPosition());
 
-            return parseNotBool(current);
-        } else if (current.equals("+")) {
+            return parseNotBool();
+        } else if (splitString.getCurrentElement().equals("+")) {
             splitString.setPosition(splitString.getPosition() + 1);
-            current = splitString.getNthElement(splitString.getPosition());
 
             return parseArrayOrNumber();
         }
@@ -290,7 +260,7 @@ public class GrammarInputValidator implements InputValidator {
     }
 
     private boolean parseStringExpression() {
-        if (isEmpty()) {
+        if (splitString.isEmpty()) {
             return false;
         }
 
@@ -320,7 +290,7 @@ public class GrammarInputValidator implements InputValidator {
     }
 
     private boolean parseStringOperation() {
-        if (isEmpty()) {
+        if (splitString.isEmpty()) {
             return true;
         }
 
@@ -337,7 +307,7 @@ public class GrammarInputValidator implements InputValidator {
     }
 
     private boolean parseBoolExpression() {
-        if (isEmpty()) {
+        if (splitString.isEmpty()) {
             return false;
         }
 
@@ -359,7 +329,7 @@ public class GrammarInputValidator implements InputValidator {
     }
 
     private boolean parseBoolOperation() {
-        if (isEmpty()) {
+        if (splitString.isEmpty()) {
             return true;
         }
 

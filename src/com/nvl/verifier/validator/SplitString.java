@@ -27,7 +27,15 @@ public class SplitString {
         this.position = position;
     }
 
-    public String getCurrent() {
+    public String getCurrentElement() {
         return getNthElement(position);
+    }
+
+    public boolean isEmpty() {
+        return position == splitInput.length;
+    }
+
+    public void nextPosition() {
+        ++position;
     }
 }
