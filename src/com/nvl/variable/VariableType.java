@@ -5,5 +5,4 @@ public enum VariableType {
     NUMBER,
     BOOLEAN,
     ARRAY
-    // TODO: NVL - add array type
 }

@@ -22,7 +22,6 @@ import org.junit.Test;
 import java.util.HashMap;
 
 public class GuiAssertionVerifierTest {
-    // TODO: Vicky
     private Responder responder;
     private VariableManager variableManager;
     private RequestProcessor requestProcessor;

@@ -8,7 +8,6 @@ package com.nvl.ui;
 import com.nvl.responder.Responder;
 import com.nvl.variable.EvaluatedVariable;
 
-// TODO: Nicky - make the Enter key press the button. Make the press of the button focus the text box.
 public class SwingGraphicalUserInterface extends javax.swing.JFrame implements GraphicalUserInterface {
     private static final long serialVersionUID = 1L;
     private Responder responder;
@@ -118,9 +117,6 @@ public class SwingGraphicalUserInterface extends javax.swing.JFrame implements G
         txtAreaVariables.setText(sb.toString());
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public void start() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -152,7 +148,7 @@ public class SwingGraphicalUserInterface extends javax.swing.JFrame implements G
             }
         });
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEvaluate;
     private javax.swing.JPanel jPanel1;
