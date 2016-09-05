@@ -26,24 +26,20 @@ public class ResponderImpl implements Responder {
     public String process(String userInput) {
         String response = "";
 
-        try {
-            String spaceFixedInput = inputSpaceFixer.fix(userInput);
-            validateInput(spaceFixedInput);
+        String spaceFixedInput = inputSpaceFixer.fix(userInput);
+        validateInput(spaceFixedInput);
 
-            InputType inputType = typeDeterminer.determineType(spaceFixedInput);
+        InputType inputType = typeDeterminer.determineType(spaceFixedInput);
 
-            if (inputType == InputType.NEW_VARIABLE) {
-                requestProcessor.addVariable(spaceFixedInput);
-                response = Constants.NEW_VARIABLE_MESSAGE;
-            } else if (inputType == InputType.EXISTING_VARIABLE) {
-                requestProcessor.updateVariable(spaceFixedInput);
-                response = Constants.EXISTING_VARIABLE_MESSAGE;
-            } else if (inputType == InputType.STATEMENT) {
-                boolean validStatement = requestProcessor.verifyStatement(spaceFixedInput);
-                response = String.format(Constants.STATEMENT_FORMAT, userInput, Boolean.toString(validStatement).toUpperCase());
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(Constants.INVALID_INPUT_MESSAGE + ":( ");
+        if (inputType == InputType.NEW_VARIABLE) {
+            requestProcessor.addVariable(spaceFixedInput);
+            response = Constants.NEW_VARIABLE_MESSAGE;
+        } else if (inputType == InputType.EXISTING_VARIABLE) {
+            requestProcessor.updateVariable(spaceFixedInput);
+            response = Constants.EXISTING_VARIABLE_MESSAGE;
+        } else if (inputType == InputType.STATEMENT) {
+            boolean validStatement = requestProcessor.verifyStatement(spaceFixedInput);
+            response = String.format(Constants.STATEMENT_FORMAT, userInput, Boolean.toString(validStatement).toUpperCase());
         }
 
         return response;
