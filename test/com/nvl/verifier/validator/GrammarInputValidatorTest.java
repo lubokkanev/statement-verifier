@@ -5,7 +5,6 @@ import com.nvl.variable.VariableType;
 import com.nvl.variable.manager.MapVariableManager;
 import com.nvl.variable.manager.VariableManager;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -15,11 +14,11 @@ import static org.junit.Assert.assertTrue;
 
 public class GrammarInputValidatorTest {
     private GrammarInputValidator grammarInputValidator;
-    private VariableManager variableManager;
 
     @Before
     public void setUp() {
-        variableManager = new MapVariableManager(new HashMap<>());
+        VariableManager variableManager = new MapVariableManager(new HashMap<>());
+
         variableManager.addVariable(new EvaluatedVariable(VariableType.NUMBER, "5", "a"));
         variableManager.addVariable(new EvaluatedVariable(VariableType.NUMBER, "7", "b"));
         variableManager.addVariable(new EvaluatedVariable(VariableType.NUMBER, "8", "c"));
@@ -106,7 +105,7 @@ public class GrammarInputValidatorTest {
 
     @Test
     public void testStringBracketsTrue() {
-        assertTrue(grammarInputValidator.isValid("str * ( a + 5 ) < 'lqlq' * ( 3 + b )"));
+        assertFalse(grammarInputValidator.isValid("str * ( a + 5 ) < 'lqlq' * ( 3 + b )"));
     }
 
     @Test
@@ -129,10 +128,9 @@ public class GrammarInputValidatorTest {
         assertFalse(grammarInputValidator.isValid("bool + 4 * 3 < 6 ( + bool2 )"));
     }
 
-    @Ignore("Test ignored: bug")
     @Test
     public void testInvalidString() {
-        assertTrue(grammarInputValidator.isValid("str + ( 3 * str2 ) == str2 * ( 8 + a )"));
+        assertFalse(grammarInputValidator.isValid("str + ( 3 * str2 ) == str2 * ( 8 + a )"));
     }
 
     @Test
@@ -303,5 +301,25 @@ public class GrammarInputValidatorTest {
     @Test
     public void testStringMultiplication() {
         assertFalse(grammarInputValidator.isValid("'a' * 'a' == 'a'"));
+    }
+
+    @Test
+    public void testStringBrackets() {
+        assertTrue(grammarInputValidator.isValid("str + ( 'asd' + str2 ) == str"));
+    }
+
+    @Test
+    public void testStringAddition() {
+        assertTrue(grammarInputValidator.isValid("'as' + str == str2"));
+    }
+
+    @Test
+    public void testStringNumberMultiplication() {
+        assertFalse(grammarInputValidator.isValid("'as' * 2 == str2"));
+    }
+
+    @Test
+    public void testNumberStringMultiplication() {
+        assertFalse(grammarInputValidator.isValid("2 * 'as' == str2"));
     }
 }

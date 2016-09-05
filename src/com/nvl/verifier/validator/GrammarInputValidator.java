@@ -246,7 +246,7 @@ public class GrammarInputValidator implements InputValidator {
 
         if (splitString.getCurrentElement().equals("*")) {
             splitString.setPosition(splitString.getPosition() + 1);
-            return parseNotBool();
+            return parseArrayOrNumber();
         } else if (splitString.getCurrentElement().equals("+")) {
             splitString.setPosition(splitString.getPosition() + 1);
             return parseArrayOrNumber();
@@ -282,9 +282,6 @@ public class GrammarInputValidator implements InputValidator {
         if (currentElement.equals("+")) {
             splitString.setPosition(splitString.getPosition() + 1);
             return parseStringExpression();
-        } else if (currentElement.equals("*")) {
-            splitString.setPosition(splitString.getPosition() + 1);
-            return parseIntExpression();
         }
 
         return true;
