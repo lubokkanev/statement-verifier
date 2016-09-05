@@ -25,7 +25,7 @@ public abstract class AbstractRpnVerifier implements RPNVerifier {
             case ">=":
                 return left.compareTo(right) >= 0;
             case "<=":
-                return left.compareTo(right) >= 0;
+                return left.compareTo(right) <= 0;
             case "!=":
                 return left.compareTo(right) != 0;
             default:
