@@ -71,4 +71,9 @@ public class StatementVerifierTest_number {
 
         assertFalse(statementVerifier.verifyStatement("( ( a * 6 ) + 5 ) * 4 <= 2 * ( b + 1 )"));
     }
+
+    @Test
+    public void testVerifyStatement_unequal() {
+        assertFalse(statementVerifier.verifyStatement("5 + 6 != 11"));
+    }
 }

@@ -329,4 +329,9 @@ public class GrammarInputValidatorTest {
     public void testMultipleWordString() {
         assertTrue(grammarInputValidator.isValid("str3 = 'a b c'"));
     }
+
+    @Test
+    public void testComplexBools() {
+        assertTrue(grammarInputValidator.isValid("bool && ( ! bool || true ) == bool && bool"));
+    }
 }
