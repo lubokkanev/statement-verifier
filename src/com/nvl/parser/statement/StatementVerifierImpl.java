@@ -1,6 +1,6 @@
 package com.nvl.parser.statement;
 
-import com.nvl.parser.rpn.RPNVerifier;
+import com.nvl.parser.rpn.RpnVerifier;
 import com.nvl.parser.rpn.verifier.ArrayRpnVerifier;
 import com.nvl.parser.rpn.verifier.BooleanRpnVerifier;
 import com.nvl.parser.rpn.verifier.NumberRpnVerifier;
@@ -20,7 +20,7 @@ public class StatementVerifierImpl implements StatementVerifier {
     @Override
     public boolean verifyStatement(String statement) {
         StringBuilder valueStatement = new StringBuilder(statement);
-        RPNVerifier verify;
+        RpnVerifier verify;
         boolean isBooleanOperation = false, isStringOperation = false, isArrayOperation = false;
         for (int i = 0; i < valueStatement.length(); ++i) {
 

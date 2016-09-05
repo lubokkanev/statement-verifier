@@ -47,7 +47,7 @@ public class GrammarInputValidator implements InputValidator {
     }
 
     private boolean parseBoolComparison() {
-        if (splitString.getCurrentElement().equals("==")) {
+        if (splitString.getCurrentElement().equals("==") || splitString.getCurrentElement().equals("!=")) {
             splitString.nextPosition();
             return parseBoolExpression();
         }

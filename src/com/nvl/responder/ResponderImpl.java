@@ -1,5 +1,6 @@
 package com.nvl.responder;
 
+import com.nvl.constants.Constants;
 import com.nvl.variable.EvaluatedVariable;
 import com.nvl.verifier.determiner.InputType;
 import com.nvl.verifier.determiner.InputTypeDeterminer;
@@ -12,40 +13,37 @@ public class ResponderImpl implements Responder {
     private InputTypeDeterminer typeDeterminer;
     private RequestProcessor requestProcessor;
     private InputValidator inputValidator;
-
-    private static final String NEW_VARIABLE_MESSAGE = "Variable added successfully. ";
-    private static final String EXISTING_VARIABLE_MESSAGE = "Variable updated successfully. ";
-    private static final String STATEMENT_FORMAT = "The statement \"%s\" is %s.";
-    private static final String INVALID_INPUT_MESSAGE = "Invalid input. ";
+    private InputSpaceFixer inputSpaceFixer;
 
     public ResponderImpl(InputTypeDeterminer typeDeterminer, RequestProcessor requestProcessor, InputValidator inputValidator) {
         this.typeDeterminer = typeDeterminer;
         this.requestProcessor = requestProcessor;
         this.inputValidator = inputValidator;
+        this.inputSpaceFixer = new InputSpaceFixer();
     }
 
     @Override
     public String process(String userInput) {
-        validateInput(userInput);
-
-        InputType inputType = typeDeterminer.determineType(userInput);
         String response = "";
 
-        if (inputType == InputType.NEW_VARIABLE) {
-            requestProcessor.addVariable(userInput);
-            response = NEW_VARIABLE_MESSAGE;
-        } else if (inputType == InputType.EXISTING_VARIABLE) {
-            requestProcessor.updateVariable(userInput);
-            response = EXISTING_VARIABLE_MESSAGE;
-        } else if (inputType == InputType.STATEMENT) {
-            boolean validStatement;
+        try {
+            String spaceFixedInput = inputSpaceFixer.fix(userInput);
+            validateInput(spaceFixedInput);
 
-            try {
-                validStatement = requestProcessor.verifyStatement(userInput);
-                response = String.format(STATEMENT_FORMAT, userInput, Boolean.toString(validStatement).toUpperCase());
-            } catch (Exception e) {
-                throw new RuntimeException(INVALID_INPUT_MESSAGE + ":( ");
+            InputType inputType = typeDeterminer.determineType(spaceFixedInput);
+
+            if (inputType == InputType.NEW_VARIABLE) {
+                requestProcessor.addVariable(spaceFixedInput);
+                response = Constants.NEW_VARIABLE_MESSAGE;
+            } else if (inputType == InputType.EXISTING_VARIABLE) {
+                requestProcessor.updateVariable(spaceFixedInput);
+                response = Constants.EXISTING_VARIABLE_MESSAGE;
+            } else if (inputType == InputType.STATEMENT) {
+                boolean validStatement = requestProcessor.verifyStatement(spaceFixedInput);
+                response = String.format(Constants.STATEMENT_FORMAT, userInput, Boolean.toString(validStatement).toUpperCase());
             }
+        } catch (Exception e) {
+            throw new RuntimeException(Constants.INVALID_INPUT_MESSAGE + ":( ");
         }
 
         return response;
@@ -53,7 +51,7 @@ public class ResponderImpl implements Responder {
 
     private void validateInput(String userInput) {
         if (!inputValidator.isValid(userInput)) {
-            throw new RuntimeException(INVALID_INPUT_MESSAGE);
+            throw new RuntimeException(Constants.INVALID_INPUT_MESSAGE);
         }
     }
 
@@ -62,3 +60,4 @@ public class ResponderImpl implements Responder {
         return requestProcessor.variables();
     }
 }
+

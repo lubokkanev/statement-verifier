@@ -8,7 +8,7 @@ package com.nvl.parser.rpn;
 /**
  * @author niki
  */
-public abstract class AbstractRpnVerifier implements RPNVerifier {
+public abstract class AbstractRpnVerifier implements RpnVerifier {
 
     @Override
     public abstract boolean correct(StringBuilder input);

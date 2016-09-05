@@ -1,13 +1,12 @@
-package com.nvl;
+package com.nvl.responder;
 
+import com.nvl.constants.Constants;
 import com.nvl.parser.statement.StatementVerifier;
 import com.nvl.parser.statement.StatementVerifierImpl;
 import com.nvl.parser.value.VariableTypeParser;
 import com.nvl.parser.value.VariableTypeParserImpl;
 import com.nvl.parser.variable_definition.VariableDefinitionParser;
 import com.nvl.parser.variable_definition.VariableDefinitionParserImpl;
-import com.nvl.responder.Responder;
-import com.nvl.responder.ResponderImpl;
 import com.nvl.variable.manager.MapVariableManager;
 import com.nvl.variable.manager.VariableManager;
 import com.nvl.verifier.determiner.InputTypeDeterminer;
@@ -21,7 +20,9 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-public class GuiAssertionVerifierTest {
+import static org.junit.Assert.assertEquals;
+
+public class ResponderTest {
     private Responder responder;
     private VariableManager variableManager;
     private RequestProcessor requestProcessor;
@@ -41,8 +42,44 @@ public class GuiAssertionVerifierTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void testChangeType() {
+    public void testProcess_changeType() {
         responder.process("a = 5");
         responder.process("a = 'asdf'");
+    }
+
+    @Test
+    public void testProcess_string() {
+        String statement = "'asdf' <= 'asdf'";
+        assertEquals(String.format(Constants.STATEMENT_FORMAT, statement, "TRUE"), responder.process(statement));
+    }
+
+    @Test
+    public void testProcess_spacingNumbers() {
+        String statement = "   3+   5  ==8   ";
+        assertEquals(String.format(Constants.STATEMENT_FORMAT, statement, "TRUE"), responder.process(statement));
+    }
+
+    @Test
+    public void testProcess_spacingStrings() {
+        String statement = "   'asdf'+   'asdf'  <=    'asdf'   ";
+        assertEquals(String.format(Constants.STATEMENT_FORMAT, statement, "FALSE"), responder.process(statement));
+    }
+
+    @Test
+    public void testProcess_spacingArrays() {
+        String statement = "{1, 2,3}+{10}=={11,2,3}";
+        assertEquals(String.format(Constants.STATEMENT_FORMAT, statement, "TRUE"), responder.process(statement));
+    }
+
+    @Test
+    public void testProcess_spacingBooleans() {
+        String statement = "true&&!  true==    !false";
+        assertEquals(String.format(Constants.STATEMENT_FORMAT, statement, "FALSE"), responder.process(statement));
+    }
+
+    @Test
+    public void testProcess_spacingInStrings() {
+        String statement = "'a b c' == 'abc'";
+        assertEquals(String.format(Constants.STATEMENT_FORMAT, statement, "FALSE"), responder.process(statement));
     }
 }

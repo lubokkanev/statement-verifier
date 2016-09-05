@@ -4,6 +4,7 @@ import com.nvl.variable.EvaluatedVariable;
 import com.nvl.variable.VariableType;
 import com.nvl.variable.manager.MapVariableManager;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -58,6 +59,12 @@ public class StatementVerifierTest_string {
     public void testVerifyStatement_capitalLetters() {
         variableManager.addVariable(new EvaluatedVariable(VariableType.STRING, "'aSd'", "s"));
         assertTrue(statementVerifier.verifyStatement("s + 'a' == 'aSd' + 'a'"));
+    }
+
+    @Ignore("Test ignored: Not implemented nor needed for now. ")
+    @Test
+    public void testVerityStatement_spacesMatter() {
+        assertFalse(statementVerifier.verifyStatement("'one two' == 'o net wo'"));
     }
 
     @Test

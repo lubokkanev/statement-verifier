@@ -6,9 +6,8 @@
 package com.nvl.parser.rpn;
 
 /**
- *
  * @author niki
  */
-public interface RPNVerifier {
-    public boolean  correct(StringBuilder input);
+public interface RpnVerifier {
+    boolean correct(StringBuilder input);
 }

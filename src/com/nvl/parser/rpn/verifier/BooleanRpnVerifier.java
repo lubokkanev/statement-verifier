@@ -63,7 +63,7 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
                 case " ":
                     break;
                 case ")":
-                    while (!operationStack.empty() && operationStack.peek().equals("(")) {   // pop everything from stack to the result until we get to the '('
+                    while (!operationStack.empty() && !operationStack.peek().equals("(")) {   // pop everything from stack to the result until we get to the '('
                         result.append(' ').append(operationStack.pop());
                     }
                     if (!operationStack.empty()) {    //remove the '('
@@ -79,7 +79,7 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
         while (!operationStack.isEmpty()) {  //pop every operation from the stack to the result
             result.append(' ').append(operationStack.pop());
         }  //end of while
-        return result.toString();  //return resulter RPN
+        return result.toString();  //return resulted RPN
     }  //end of create RPN
 
     private Boolean calculateRPN(String input) {
