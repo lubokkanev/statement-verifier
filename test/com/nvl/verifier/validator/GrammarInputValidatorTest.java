@@ -5,6 +5,7 @@ import com.nvl.variable.VariableType;
 import com.nvl.variable.manager.MapVariableManager;
 import com.nvl.variable.manager.VariableManager;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -140,7 +141,7 @@ public class GrammarInputValidatorTest {
 
     @Test
     public void testBoolean() {
-        assertTrue(grammarInputValidator.isValid("bool && bool2 || bool3"));
+        assertFalse(grammarInputValidator.isValid("bool && bool2 || bool3"));
     }
 
     @Test
@@ -321,5 +322,11 @@ public class GrammarInputValidatorTest {
     @Test
     public void testNumberStringMultiplication() {
         assertFalse(grammarInputValidator.isValid("2 * 'as' == str2"));
+    }
+
+    @Ignore("Not implemented yet. ")
+    @Test
+    public void testMultipleWordString() {
+        assertTrue(grammarInputValidator.isValid("str3 = 'a b c'"));
     }
 }
