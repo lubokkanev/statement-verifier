@@ -7,11 +7,11 @@ package com.nvl.parser.rpn.verifier;
 
 import com.nvl.parser.rpn.AbstractStringNumberRPNVerifier;
 import com.nvl.parser.value.VariableTypeParserImpl;
+
 import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
- *
  * @author niki
  */
 public class StringRPNVerifier extends AbstractStringNumberRPNVerifier {
@@ -20,60 +20,63 @@ public class StringRPNVerifier extends AbstractStringNumberRPNVerifier {
     public boolean correct(StringBuilder builder) {
         String input = builder.toString();
         String operation = parseOperation(input);   //determine the operation (==, <=, >, !=)
-        
+
         String[] split = input.split(operation);   //split by the operation
-        String leftExpreion = split[0].trim();            //left expresion
-        String rightExpresion = split[1].trim();           //right expression
-        
-        String leftRPN = createRPN(leftExpreion);           //RPN for the left expresion
-        String rightRPN = createRPN(rightExpresion);        //RPN for the right expresion
-        
-        String left = calculateRPNforString(leftRPN);       //left string result
-        String right = calculateRPNforString(rightRPN);     //right string result
+        String leftExpression = split[0].trim();            //left expression
+        String rightExpression = split[1].trim();           //right expression
+
+        String leftRPN = createRPN(leftExpression);           //RPN for the left expression
+        String rightRPN = createRPN(rightExpression);        //RPN for the right expression
+
+        String left = calculateRpnForString(leftRPN);       //left string result
+        String right = calculateRpnForString(rightRPN);     //right string result
         return compare(left, right, operation);             //compare them with the operation
     }  //end of correct
 
     //calculate the reverse polish notation for strings
-    private String calculateRPNforString(String input) {
+    private String calculateRpnForString(String input) {
         StringTokenizer tokens = new StringTokenizer(input);  //tokenize the input by ' '
         Stack<String> stack = new Stack<>();  //stack for the numbers
         while (tokens.hasMoreTokens()) {   //while we have more tokens
             String current = tokens.nextToken();
-            switch(current){        //swtich to see if current string is operation or string
-                case "+": plus(stack); break;
-                case "*": multiply(stack); break;
-                default: stack.push(current);       //current is string
+            switch (current) {        //switch to see if current string is operation or string
+                case "+":
+                    plus(stack);
+                    break;
+                case "*":
+                    multiply(stack);
+                    break;
+                default:
+                    stack.push(current);       //current is string
             }   //end of switch
         }   //end of while
         return stack.pop();     //return result
-    } //end of calculateRPNforStrings
-    
-    
+    } //end of calculateRpnForStrings
+
     //concatenate the top 2 strings
     private void plus(Stack<String> stack) {
         String right = stack.pop();
         String left = stack.pop();
         stack.push(left.concat(right));
     } //end of plus
-    
 
     //concatenate string given amount of times (golqma kasha)
     private void multiply(Stack<String> stack) {
-        boolean leftIsNumber = false, rightIsNumber = false;    //atleast one will be a number
+        boolean leftIsNumber = false, rightIsNumber = false;    //at least one will be a number
         Object left, right;            //values for the operation
         int count;      //how many times to concatenate
         String strToConcatenate;
         if (VariableTypeParserImpl.isNumber(stack.peek())) {   //if right is number
-            right = (Integer) Integer.parseInt(stack.pop());
+            right = Integer.parseInt(stack.pop());
             rightIsNumber = true;
         } else {
-            right = (String) stack.pop();        //else its string
+            right = stack.pop();        //else its string
         }
         if (VariableTypeParserImpl.isNumber(stack.peek())) {
-            left = (Integer) Integer.parseInt(stack.pop());          //if left is number
+            left = Integer.parseInt(stack.pop());          //if left is number
             leftIsNumber = true;
         } else {
-            left = (String) stack.pop();         //else its string
+            left = stack.pop();         //else its string
         }
         if (leftIsNumber && rightIsNumber) {         //both are numbers
             stack.push(Integer.toString((Integer) left * (Integer) right));  // so we parse them to ints, multiply them and push it to stack

@@ -101,9 +101,8 @@ public class SwingGraphicalUserInterface extends javax.swing.JFrame implements G
             } catch (Exception e) {
                 lblResult.setText(e.getMessage());
             }
-            //if (result.equals("Variable added successfully") || result.equals("Variable updated successfully")) {
+
             printVariables();
-            //}
         }
         txtInputStatement.setText("");
     }//GEN-LAST:event_btnEvaluateActionPerformed
