@@ -38,8 +38,14 @@ public class ResponderImpl implements Responder {
             requestProcessor.updateVariable(userInput);
             response = EXISTING_VARIABLE_MESSAGE;
         } else if (inputType == InputType.STATEMENT) {
-            boolean validStatement = requestProcessor.verifyStatement(userInput);
-            response = String.format(STATEMENT_FORMAT, userInput, Boolean.toString(validStatement));
+            boolean validStatement;
+
+            try {
+                validStatement = requestProcessor.verifyStatement(userInput);
+                response = String.format(STATEMENT_FORMAT, userInput, Boolean.toString(validStatement));
+            } catch (Exception e) {
+                throw new RuntimeException(INVALID_INPUT_MESSAGE + ":(");
+            }
         }
 
         return response;
