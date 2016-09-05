@@ -42,7 +42,7 @@ public class ResponderImpl implements Responder {
 
             try {
                 validStatement = requestProcessor.verifyStatement(userInput);
-                response = String.format(STATEMENT_FORMAT, userInput, Boolean.toString(validStatement));
+                response = String.format(STATEMENT_FORMAT, userInput, Boolean.toString(validStatement).toUpperCase());
             } catch (Exception e) {
                 throw new RuntimeException(INVALID_INPUT_MESSAGE + ":(");
             }
