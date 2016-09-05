@@ -20,10 +20,12 @@ public class InputTypeMatcher {
 
         replaceWithValue(sideSplit);
 
-        boolean arrayProblem = sideSplit[0].contains("{") && !sideSplit[1].contains("{") || !sideSplit[0].contains("{") && sideSplit[1].contains("{");
-        boolean stringProblem = sideSplit[0].contains("'") && !sideSplit[1].contains("'") || !sideSplit[0].contains("'") && sideSplit[1].contains("'");
+        boolean leftSideHasArrays = sideSplit[0].contains("{");
+        boolean leftSideHasStrings = sideSplit[0].contains("'");
+        boolean rightSideHasArrays = sideSplit[1].contains("{");
+        boolean rightSideHasStrings = sideSplit[1].contains("'");
 
-        return !arrayProblem && !stringProblem;
+        return leftSideHasArrays == rightSideHasArrays && leftSideHasStrings == rightSideHasStrings && !(leftSideHasArrays && leftSideHasStrings);
     }
 
     private void replaceWithValue(String[] sideSplit) {
