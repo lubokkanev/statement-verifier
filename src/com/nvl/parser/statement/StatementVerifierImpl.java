@@ -1,10 +1,10 @@
 package com.nvl.parser.statement;
 
 import com.nvl.parser.rpn.RPNVerifier;
-import com.nvl.parser.rpn.verifier.ArrayRPNVerifier;
+import com.nvl.parser.rpn.verifier.ArrayRpnVerifier;
 import com.nvl.parser.rpn.verifier.BooleanRPNVerifier;
-import com.nvl.parser.rpn.verifier.NumberRPNVerifier;
-import com.nvl.parser.rpn.verifier.StringRPNVerifier;
+import com.nvl.parser.rpn.verifier.NumberRpnVerifier;
+import com.nvl.parser.rpn.verifier.StringRpnVerifier;
 import com.nvl.variable.manager.VariableManager;
 
 public class StatementVerifierImpl implements StatementVerifier {
@@ -78,18 +78,18 @@ public class StatementVerifierImpl implements StatementVerifier {
                     i++;
                 }
             }
-            verify = new StringRPNVerifier();       //we verify the statement
+            verify = new StringRpnVerifier();       //we verify the statement
             return verify.correct(valueStatement);
         }
         if (isArrayOperation) {
-            verify = new ArrayRPNVerifier();
+            verify = new ArrayRpnVerifier();
             return verify.correct(valueStatement);
         }
         if (isBooleanOperation) {                     //we have boolean operations
             verify = new BooleanRPNVerifier();
             return verify.correct(valueStatement);
         }
-        verify = new NumberRPNVerifier();           //we have number operations
+        verify = new NumberRpnVerifier();           //we have number operations
         return verify.correct(valueStatement);
     }
 }

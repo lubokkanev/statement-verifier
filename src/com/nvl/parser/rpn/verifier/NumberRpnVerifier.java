@@ -5,7 +5,7 @@
  */
 package com.nvl.parser.rpn.verifier;
 
-import com.nvl.parser.rpn.AbstractStringNumberRPNVerifier;
+import com.nvl.parser.rpn.AbstractStringNumberRpnVerifier;
 import com.nvl.parser.value.VariableTypeParserImpl;
 import java.util.Stack;
 import java.util.StringTokenizer;
@@ -14,7 +14,7 @@ import java.util.StringTokenizer;
  *
  * @author niki
  */
-public class NumberRPNVerifier extends AbstractStringNumberRPNVerifier{
+public class NumberRpnVerifier extends AbstractStringNumberRpnVerifier {
     /*this works only for numbers*/
     public boolean correct(StringBuilder builder) {
         String input = builder.toString();   //convert builder to string
@@ -28,7 +28,7 @@ public class NumberRPNVerifier extends AbstractStringNumberRPNVerifier{
         Double right = calculateRPN(rightRPN);
         return compare(left, right, operation);
     }   //end of correctForNumbers
-    
+
     //calculates the value of the expresion by RPN
     private Double calculateRPN(String input) {
         StringTokenizer tokens = new StringTokenizer(input);  //tokenize the input by ' '

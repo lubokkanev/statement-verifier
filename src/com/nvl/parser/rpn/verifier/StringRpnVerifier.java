@@ -5,7 +5,7 @@
  */
 package com.nvl.parser.rpn.verifier;
 
-import com.nvl.parser.rpn.AbstractStringNumberRPNVerifier;
+import com.nvl.parser.rpn.AbstractStringNumberRpnVerifier;
 import com.nvl.parser.value.VariableTypeParserImpl;
 
 import java.util.Stack;
@@ -14,7 +14,7 @@ import java.util.StringTokenizer;
 /**
  * @author niki
  */
-public class StringRPNVerifier extends AbstractStringNumberRPNVerifier {
+public class StringRpnVerifier extends AbstractStringNumberRpnVerifier {
 
     //only for strings
     public boolean correct(StringBuilder builder) {
@@ -60,7 +60,7 @@ public class StringRPNVerifier extends AbstractStringNumberRPNVerifier {
         stack.push(left.concat(right));
     } //end of plus
 
-    //concatenate string given amount of times (golqma kasha)
+    //concatenate string given amount of times
     private void multiply(Stack<String> stack) {
         boolean leftIsNumber = false, rightIsNumber = false;    //at least one will be a number
         Object left, right;            //values for the operation

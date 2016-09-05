@@ -11,7 +11,7 @@ import java.util.Stack;
  *
  * @author niki
  */
-public abstract class AbstractStringNumberRPNVerifier extends AbstractRPNVerifier {
+public abstract class AbstractStringNumberRpnVerifier extends AbstractRPNVerifier {
 
     @Override
     public abstract boolean correct(StringBuilder input);
