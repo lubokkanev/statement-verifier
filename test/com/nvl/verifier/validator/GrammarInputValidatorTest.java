@@ -19,16 +19,16 @@ public class GrammarInputValidatorTest {
     public void setUp() {
         VariableManager variableManager = new MapVariableManager(new HashMap<>());
 
-        variableManager.addVariable(new EvaluatedVariable(VariableType.NUMBER, "5", "a"));
-        variableManager.addVariable(new EvaluatedVariable(VariableType.NUMBER, "7", "b"));
-        variableManager.addVariable(new EvaluatedVariable(VariableType.NUMBER, "8", "c"));
-        variableManager.addVariable(new EvaluatedVariable(VariableType.STRING, "'abra'", "str"));
-        variableManager.addVariable(new EvaluatedVariable(VariableType.STRING, "'cadabra'", "str2"));
-        variableManager.addVariable(new EvaluatedVariable(VariableType.BOOLEAN, "TRUE", "bool"));
-        variableManager.addVariable(new EvaluatedVariable(VariableType.BOOLEAN, "FALSE", "bool2"));
-        variableManager.addVariable(new EvaluatedVariable(VariableType.BOOLEAN, "TRUE", "bool3"));
-        variableManager.addVariable(new EvaluatedVariable(VariableType.ARRAY, "{1,2,3}", "arr1"));
-        variableManager.addVariable(new EvaluatedVariable(VariableType.ARRAY, "{11,22,33}", "arr2"));
+        variableManager.addVariable(new EvaluatedVariable("a", "5", VariableType.NUMBER));
+        variableManager.addVariable(new EvaluatedVariable("b", "7", VariableType.NUMBER));
+        variableManager.addVariable(new EvaluatedVariable("c", "8", VariableType.NUMBER));
+        variableManager.addVariable(new EvaluatedVariable("str", "'abra'", VariableType.STRING));
+        variableManager.addVariable(new EvaluatedVariable("str2", "'cadabra'", VariableType.STRING));
+        variableManager.addVariable(new EvaluatedVariable("bool", "TRUE", VariableType.BOOLEAN));
+        variableManager.addVariable(new EvaluatedVariable("bool2", "FALSE", VariableType.BOOLEAN));
+        variableManager.addVariable(new EvaluatedVariable("bool3", "TRUE", VariableType.BOOLEAN));
+        variableManager.addVariable(new EvaluatedVariable("arr1", "{1,2,3}", VariableType.ARRAY));
+        variableManager.addVariable(new EvaluatedVariable("arr2", "{11,22,33}", VariableType.ARRAY));
 
         grammarInputValidator = new GrammarInputValidator(variableManager);
     }
@@ -331,5 +331,35 @@ public class GrammarInputValidatorTest {
     @Test
     public void testComplexBooleans() {
         assertTrue(grammarInputValidator.isValid("bool && ( ! bool || true ) == bool && bool"));
+    }
+
+    @Test
+    public void testInvalidVariableType() {
+        assertFalse(grammarInputValidator.isValid("a = 3.14"));
+    }
+
+    @Test
+    public void testVariableType2() {
+        assertTrue(grammarInputValidator.isValid("b = 3"));
+    }
+
+    @Test
+    public void testVariableType3() {
+        assertFalse(grammarInputValidator.isValid("b = {1,2,3}"));
+    }
+
+    @Test
+    public void testVariableType4() {
+        assertFalse(grammarInputValidator.isValid("5 + ( 3 == 10"));
+    }
+
+    @Test
+    public void testVariableType5() {
+        assertFalse(grammarInputValidator.isValid("{5} + ( {3} == {10}"));
+    }
+
+    @Test
+    public void testVariableType6() {
+        assertFalse(grammarInputValidator.isValid("{5} <= {3} == {10}"));
     }
 }

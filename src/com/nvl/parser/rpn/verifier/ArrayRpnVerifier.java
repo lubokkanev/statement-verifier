@@ -83,9 +83,9 @@ public class ArrayRpnVerifier extends AbstractStringNumberRpnVerifier {
         if (!leftIsNumber && rightIsNumber) {      //if the left is an array and the right one is number
             stack.push(executeOperationNumberArray(left, right, operation));        //do the operation with array and number
             return;
-        } else {
-            stack.push(executeOperationArrays(left, right, operation));     //else both are arrays, so we do the operation with array
-        }   //end of if/else
+        }
+
+        stack.push(executeOperationArrays(left, right, operation));     //else both are arrays, so we do the operation with array
     }   //end of execute
 
     //executes the given operation(+ or *) over 2 integers

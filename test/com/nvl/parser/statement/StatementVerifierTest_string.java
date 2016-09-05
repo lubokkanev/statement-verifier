@@ -39,25 +39,25 @@ public class StatementVerifierTest_string {
 
     @Test
     public void testVerifyStatement_complex() {
-        variableManager.addVariable(new EvaluatedVariable(VariableType.STRING, "'asd'", "s"));
+        variableManager.addVariable(new EvaluatedVariable("s", "'asd'", VariableType.STRING));
         assertFalse(statementVerifier.verifyStatement("'str' + ( s + 'a' ) > 'z'"));
     }
 
     @Test
     public void testVerifyStatement_unequalWithVariables() {
-        variableManager.addVariable(new EvaluatedVariable(VariableType.STRING, "'asd'", "s"));
+        variableManager.addVariable(new EvaluatedVariable("s", "'asd'", VariableType.STRING));
         assertFalse(statementVerifier.verifyStatement("s + 'a' != 'asda'"));
     }
 
     @Test
     public void testVerifyStatement_shorter() {
-        variableManager.addVariable(new EvaluatedVariable(VariableType.STRING, "'asd'", "s"));
+        variableManager.addVariable(new EvaluatedVariable("s", "'asd'", VariableType.STRING));
         assertTrue(statementVerifier.verifyStatement("'a' < s"));
     }
 
     @Test
     public void testVerifyStatement_capitalLetters() {
-        variableManager.addVariable(new EvaluatedVariable(VariableType.STRING, "'aSd'", "s"));
+        variableManager.addVariable(new EvaluatedVariable("s", "'aSd'", VariableType.STRING));
         assertTrue(statementVerifier.verifyStatement("s + 'a' == 'aSd' + 'a'"));
     }
 
@@ -69,7 +69,7 @@ public class StatementVerifierTest_string {
 
     @Test
     public void testVerifyStatement_spaces() {
-        variableManager.addVariable(new EvaluatedVariable(VariableType.STRING, "'once upon'", "s"));
+        variableManager.addVariable(new EvaluatedVariable("s", "'once upon'", VariableType.STRING));
         assertTrue(statementVerifier.verifyStatement("s + 'a time' == 'once upon a time'"));
     }
 }

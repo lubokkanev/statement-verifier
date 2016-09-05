@@ -1,7 +1,7 @@
 package com.nvl.variable;
 
 public class EvaluatedVariable {
-    public EvaluatedVariable(VariableType type, String value, String name) {
+    public EvaluatedVariable(String name, String value, VariableType type) {
         this.type = type;
         this.value = value;
         this.name = name;

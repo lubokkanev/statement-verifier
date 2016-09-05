@@ -68,13 +68,13 @@ public class StatementVerifierTest_array {
 
     @Test
     public void testVerifyStatement_complexWithVariables() {
-        variableManager.addVariable(new EvaluatedVariable(VariableType.ARRAY, "{1,2,3}", "s"));
+        variableManager.addVariable(new EvaluatedVariable("s", "{1,2,3}", VariableType.ARRAY));
         assertFalse(statementVerifier.verifyStatement("( {5,5,5} + s ) * s < {1,1,1}"));
     }
 
     @Test
     public void testVerifyStatement_shorter() {
-        variableManager.addVariable(new EvaluatedVariable(VariableType.STRING, "{1,1,1}", "s"));
+        variableManager.addVariable(new EvaluatedVariable("s", "{1,1,1}", VariableType.STRING));
         assertTrue(statementVerifier.verifyStatement("s < {2,3}"));
     }
 }

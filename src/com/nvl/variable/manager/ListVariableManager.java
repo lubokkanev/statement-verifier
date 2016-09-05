@@ -19,7 +19,7 @@ public class ListVariableManager implements VariableManager {
     }
 
     public void removeVariable(String name) {
-        variables.remove(new EvaluatedVariable(null, null, name));
+        variables.remove(new EvaluatedVariable(name, null, null));
     }
 
     public void updateVariable(EvaluatedVariable variable) {

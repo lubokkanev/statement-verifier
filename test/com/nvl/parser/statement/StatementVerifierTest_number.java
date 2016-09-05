@@ -43,31 +43,31 @@ public class StatementVerifierTest_number {
 
     @Test
     public void testVerifyStatement_simpleVariables() {
-        variableManager.addVariable(new EvaluatedVariable(VariableType.NUMBER, "5", "a"));
+        variableManager.addVariable(new EvaluatedVariable("a", "5", VariableType.NUMBER));
 
         assertTrue(statementVerifier.verifyStatement("a == 5"));
     }
 
     @Test
     public void testVerifyStatement_brackets() {
-        variableManager.addVariable(new EvaluatedVariable(VariableType.NUMBER, "6", "a"));
-        variableManager.addVariable(new EvaluatedVariable(VariableType.NUMBER, "7", "b"));
+        variableManager.addVariable(new EvaluatedVariable("a", "6", VariableType.NUMBER));
+        variableManager.addVariable(new EvaluatedVariable("b", "7", VariableType.NUMBER));
 
         assertTrue(statementVerifier.verifyStatement("( a + ( b + 3 ) ) <= 16"));
     }
 
     @Test
     public void testVerifyStatement_biggerThan() {
-        variableManager.addVariable(new EvaluatedVariable(VariableType.NUMBER, "6", "a"));
-        variableManager.addVariable(new EvaluatedVariable(VariableType.NUMBER, "7", "b"));
+        variableManager.addVariable(new EvaluatedVariable("a", "6", VariableType.NUMBER));
+        variableManager.addVariable(new EvaluatedVariable("b", "7", VariableType.NUMBER));
 
         assertTrue(statementVerifier.verifyStatement("( b + 5 ) * a > 11 * a"));
     }
 
     @Test
     public void testVerifyStatement_complex() {
-        variableManager.addVariable(new EvaluatedVariable(VariableType.NUMBER, "6", "a"));
-        variableManager.addVariable(new EvaluatedVariable(VariableType.NUMBER, "7", "b"));
+        variableManager.addVariable(new EvaluatedVariable("a", "6", VariableType.NUMBER));
+        variableManager.addVariable(new EvaluatedVariable("b", "7", VariableType.NUMBER));
 
         assertFalse(statementVerifier.verifyStatement("( ( a * 6 ) + 5 ) * 4 <= 2 * ( b + 1 )"));
     }

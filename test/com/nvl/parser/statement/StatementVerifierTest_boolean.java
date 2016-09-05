@@ -28,7 +28,7 @@ public class StatementVerifierTest_boolean {
 
     @Test
     public void testVerifyStatement_conjunction() {
-        assertTrue(statementVerifier.verifyStatement("true && false == false"));
+        assertTrue(statementVerifier.verifyStatement("true && ! true == false"));
     }
 
     @Test
@@ -53,7 +53,7 @@ public class StatementVerifierTest_boolean {
 
     @Test
     public void testVerifyStatement_complexWithVariables() {
-        variableManager.addVariable(new EvaluatedVariable(VariableType.BOOLEAN, "true", "a"));
+        variableManager.addVariable(new EvaluatedVariable("a", "true", VariableType.BOOLEAN));
         assertTrue(statementVerifier.verifyStatement("true && ( ! true || true ) == a && a"));
     }
 }

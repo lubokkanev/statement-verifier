@@ -8,20 +8,20 @@ public class VariableTypeParserImpl implements VariableTypeParser {
     @Override
     public EvaluatedVariable parse(UnevaluatedVariable variable) {
         if (isArray(variable.getValue())) {
-            return new EvaluatedVariable(VariableType.ARRAY, String.valueOf(variable.getValue()).toString(), variable.getName());
+            return new EvaluatedVariable(variable.getName(), String.valueOf(variable.getValue()).toString(), VariableType.ARRAY);
         } else if (isBoolean(variable.getValue())) {
-            return new EvaluatedVariable(VariableType.BOOLEAN, String.valueOf(Boolean.parseBoolean(variable.getValue())), variable.getName());
+            return new EvaluatedVariable(variable.getName(), String.valueOf(Boolean.parseBoolean(variable.getValue())), VariableType.BOOLEAN);
         } else if (isNumber(variable.getValue())) {
-            return new EvaluatedVariable(VariableType.NUMBER, Integer.valueOf(variable.getValue()).toString(), variable.getName());
+            return new EvaluatedVariable(variable.getName(), Integer.valueOf(variable.getValue()).toString(), VariableType.NUMBER);
         } else {
-            return new EvaluatedVariable(VariableType.STRING, variable.getValue(), variable.getName());
+            return new EvaluatedVariable(variable.getName(), variable.getValue(), VariableType.STRING);
         }
     }
 
     private boolean isBoolean(String value) {
         return value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false");
     }
-    
+
     public static boolean isNumber(String value) {
         try {
             Integer.parseInt(value);
@@ -30,14 +30,15 @@ public class VariableTypeParserImpl implements VariableTypeParser {
             return false;
         }
     }
-    
-    private boolean isArray(String value){
+
+    private boolean isArray(String value) {
         char[] charValue = value.toCharArray();
-        for(int i = 0; i < charValue.length; i++)
-            if(charValue[i] == '[' || charValue[i] == '{'){
+        for (int i = 0; i < charValue.length; i++) {
+            if (charValue[i] == '[' || charValue[i] == '{') {
                 return true;
             }
-                
+        }
+
         return false;
     }
 }

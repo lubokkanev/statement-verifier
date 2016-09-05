@@ -53,7 +53,7 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
                     }
                 case "&":
                 case "&&":
-                    while (!operationStack.empty() && (operationStack.peek().equals("!"))) {   //if the previous operations in the stack have higher priorities
+                    while (!operationStack.empty() && operationStack.peek().equals("!")) {   //if the previous operations in the stack have higher priorities
                         result.append(' ').append(operationStack.pop());                          // add them to result
                     }
                     result.append(' ');

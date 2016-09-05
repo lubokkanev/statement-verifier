@@ -34,10 +34,8 @@ public class GrammarInputValidator implements InputValidator {
                 if (parseBoolExpression()) {
                     parseBoolComparison();
                 }
-            } else {
-                if (parseNotBool()) {
-                    parseComparison();
-                }
+            } else if (parseNotBool()) {
+                parseComparison();
             }
         } catch (RuntimeException e) {
             return false;
@@ -229,11 +227,9 @@ public class GrammarInputValidator implements InputValidator {
                 splitString.setPosition(splitString.getPosition() + 1);
                 return parseIntOperation();
             }
-        } else {
-            if (isNumber(currentElement)) {
-                splitString.setPosition(splitString.getPosition() + 1);
-                return parseIntOperation();
-            }
+        } else if (isNumber(currentElement)) {
+            splitString.setPosition(splitString.getPosition() + 1);
+            return parseIntOperation();
         }
 
         return false;
@@ -263,11 +259,9 @@ public class GrammarInputValidator implements InputValidator {
                 splitString.setPosition(splitString.getPosition() + 1);
                 return parseStringOperation();
             }
-        } else {
-            if (isString(currentElement)) {
-                splitString.setPosition(splitString.getPosition() + 1);
-                return parseStringOperation();
-            }
+        } else if (isString(currentElement)) {
+            splitString.setPosition(splitString.getPosition() + 1);
+            return parseStringOperation();
         }
 
         return false;

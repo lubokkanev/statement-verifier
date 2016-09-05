@@ -7,6 +7,8 @@ import com.nvl.parser.value.VariableTypeParser;
 import com.nvl.parser.value.VariableTypeParserImpl;
 import com.nvl.parser.variable_definition.VariableDefinitionParser;
 import com.nvl.parser.variable_definition.VariableDefinitionParserImpl;
+import com.nvl.variable.EvaluatedVariable;
+import com.nvl.variable.VariableType;
 import com.nvl.variable.manager.MapVariableManager;
 import com.nvl.variable.manager.VariableManager;
 import com.nvl.verifier.determiner.InputTypeDeterminer;
@@ -81,5 +83,13 @@ public class ResponderTest {
     public void testProcess_spacingInStrings() {
         String statement = "'a b c' == 'abc'";
         assertEquals(String.format(Constants.STATEMENT_FORMAT, statement, "FALSE"), responder.process(statement));
+    }
+
+    @Test
+    public void testProcess_updateVariable() {
+        variableManager.addVariable(new EvaluatedVariable("a", "5", VariableType.NUMBER));
+        String statement = "a = 6";
+
+        assertEquals(Constants.EXISTING_VARIABLE_MESSAGE, responder.process(statement));
     }
 }
