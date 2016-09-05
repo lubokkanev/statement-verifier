@@ -1,10 +1,10 @@
 package com.nvl.variable;
 
-public class EvaluatedVariable {
+public class EvaluatedVariable implements Comparable<EvaluatedVariable> {
     public EvaluatedVariable(String name, String value, VariableType type) {
-        this.type = type;
-        this.value = value;
         this.name = name;
+        this.value = value;
+        this.type = type;
     }
 
     private VariableType type;
@@ -44,10 +44,7 @@ public class EvaluatedVariable {
             return false;
         }
         EvaluatedVariable variable = (EvaluatedVariable) o;
-        if (name != null ? !name.equals(variable.name) : variable.name != null) {
-            return false;
-        }
-        return true;
+        return name != null ? name.equals(variable.name) : variable.name == null;
     }
 
     @Override
@@ -57,5 +54,10 @@ public class EvaluatedVariable {
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public int compareTo(EvaluatedVariable evaluatedVariable) {
+        return name.compareTo(evaluatedVariable.name);
     }
 }

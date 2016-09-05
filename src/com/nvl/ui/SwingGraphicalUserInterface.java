@@ -8,6 +8,8 @@ package com.nvl.ui;
 import com.nvl.responder.Responder;
 import com.nvl.variable.EvaluatedVariable;
 
+import java.util.TreeSet;
+
 public class SwingGraphicalUserInterface extends javax.swing.JFrame implements GraphicalUserInterface {
     private static final long serialVersionUID = 1L;
     private Responder responder;
@@ -89,8 +91,7 @@ public class SwingGraphicalUserInterface extends javax.swing.JFrame implements G
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /*button evaluate onCliclListener - call NikiClass.niki method and sets
-     the result text, returned from the method*/
+    /*button evaluate onClickListener - call NikiClass.niki method and sets the result text, returned from the method*/
     private void btnEvaluateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEvaluateActionPerformed
         String input = txtInputStatement.getText();
         input = input.trim();
@@ -110,8 +111,8 @@ public class SwingGraphicalUserInterface extends javax.swing.JFrame implements G
     /*sets variable area with all entered variables*/
     private void printVariables() {
         StringBuilder sb = new StringBuilder();
-        for (EvaluatedVariable v : responder.variables()) {
-            sb.append(String.format("%s = %s,\t%s\n", v.getName(), v.getValue(), v.getType()));
+        for (EvaluatedVariable v : new TreeSet<>(responder.variables())) {
+            sb.append(String.format("%s = %s,\t\t%s\n", v.getName(), v.getValue(), v.getType()));
         }
         txtAreaVariables.setText(sb.toString());
     }
