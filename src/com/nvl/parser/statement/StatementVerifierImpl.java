@@ -2,7 +2,7 @@ package com.nvl.parser.statement;
 
 import com.nvl.parser.rpn.RPNVerifier;
 import com.nvl.parser.rpn.verifier.ArrayRpnVerifier;
-import com.nvl.parser.rpn.verifier.BooleanRPNVerifier;
+import com.nvl.parser.rpn.verifier.BooleanRpnVerifier;
 import com.nvl.parser.rpn.verifier.NumberRpnVerifier;
 import com.nvl.parser.rpn.verifier.StringRpnVerifier;
 import com.nvl.variable.manager.VariableManager;
@@ -86,7 +86,7 @@ public class StatementVerifierImpl implements StatementVerifier {
             return verify.correct(valueStatement);
         }
         if (isBooleanOperation) {                     //we have boolean operations
-            verify = new BooleanRPNVerifier();
+            verify = new BooleanRpnVerifier();
             return verify.correct(valueStatement);
         }
         verify = new NumberRpnVerifier();           //we have number operations

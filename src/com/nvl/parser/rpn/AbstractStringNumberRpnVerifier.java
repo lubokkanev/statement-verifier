@@ -8,10 +8,9 @@ package com.nvl.parser.rpn;
 import java.util.Stack;
 
 /**
- *
  * @author niki
  */
-public abstract class AbstractStringNumberRpnVerifier extends AbstractRPNVerifier {
+public abstract class AbstractStringNumberRpnVerifier extends AbstractRpnVerifier {
 
     @Override
     public abstract boolean correct(StringBuilder input);
@@ -30,14 +29,13 @@ public abstract class AbstractStringNumberRpnVerifier extends AbstractRPNVerifie
             switch (charInput[i]) {
                 case '+':
                 case '-':
-                    while (!operationStack.empty()
-                            && (operationStack.peek() == '*' || operationStack.peek() == '/' || operationStack.peek() == '^')) {   //if the previous operations in the stack have higher priorities
+                    while (!operationStack.empty() && (operationStack.peek() == '*' || operationStack.peek() == '/' ||
+                            operationStack.peek() == '^')) {   //if the previous operations in the stack have higher priorities
                         result.append(' ').append(operationStack.pop());                          // add them to result
                     }
                 case '*':
                 case '/':
-                    while (!operationStack.empty()
-                            && operationStack.peek() == '^') {   //if the previous operations in the stack have higher priorities
+                    while (!operationStack.empty() && operationStack.peek() == '^') {   //if the previous operations in the stack have higher priorities
                         result.append(' ').append(operationStack.pop());                          // add them to result
                     }
                 case '^':

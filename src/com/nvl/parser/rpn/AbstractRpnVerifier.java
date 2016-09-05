@@ -6,15 +6,14 @@
 package com.nvl.parser.rpn;
 
 /**
- *
  * @author niki
  */
-public abstract class AbstractRPNVerifier implements RPNVerifier{
+public abstract class AbstractRpnVerifier implements RPNVerifier {
 
     @Override
     public abstract boolean correct(StringBuilder input);
-    
-    //execute operation 
+
+    //execute operation
     protected <E extends Comparable<E>> boolean compare(E left, E right, String operation) {
         switch (operation) {
             case "==":
@@ -33,12 +32,12 @@ public abstract class AbstractRPNVerifier implements RPNVerifier{
                 return false;
         }   //end of switch
     }   //end of compare
-    
+
     //finds the operation of the statement
     protected String parseOperation(String input) {
         char[] charInput = input.toCharArray();
         int i = 0;
-        while (charInput[i] != '=' && charInput[i] != '>' && charInput[i] != '<' && (charInput[i] != '!' || charInput[i+1] != '=')) {  //iterrate while input[i] is not an operation symbol
+        while (charInput[i] != '=' && charInput[i] != '>' && charInput[i] != '<' && (charInput[i] != '!' || charInput[i + 1] != '=')) {  //iterrate while input[i] is not an operation symbol
             i++;
         }
         if (charInput[i + 1] != '=') {    //if operation is > or <

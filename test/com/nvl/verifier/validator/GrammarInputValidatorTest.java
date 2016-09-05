@@ -299,4 +299,9 @@ public class GrammarInputValidatorTest {
     public void testArrayValidInput() {
         assertTrue(grammarInputValidator.isValid("( 5 * arr1 ) + {8,9,0} != {12,24,36} * ( arr2 + 5 )"));
     }
+
+    @Test
+    public void testStringMultiplication() {
+        assertFalse(grammarInputValidator.isValid("'a' * 'a' == 'a'"));
+    }
 }

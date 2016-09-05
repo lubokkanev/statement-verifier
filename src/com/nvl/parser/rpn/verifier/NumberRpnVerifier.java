@@ -7,18 +7,18 @@ package com.nvl.parser.rpn.verifier;
 
 import com.nvl.parser.rpn.AbstractStringNumberRpnVerifier;
 import com.nvl.parser.value.VariableTypeParserImpl;
+
 import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
- *
  * @author niki
  */
 public class NumberRpnVerifier extends AbstractStringNumberRpnVerifier {
     /*this works only for numbers*/
     public boolean correct(StringBuilder builder) {
         String input = builder.toString();   //convert builder to string
-        String operation = parseOperation(input);   //deternmine the operation (==, >=, <, !=)
+        String operation = parseOperation(input);   //determine the operation (==, >=, <, !=)
         String[] split = input.split(operation);   // split the input by the operation
         String leftString = split[0].trim();        //take left side of the statement
         String rightString = split[1].trim();     //take right side of the statement
@@ -29,7 +29,7 @@ public class NumberRpnVerifier extends AbstractStringNumberRpnVerifier {
         return compare(left, right, operation);
     }   //end of correctForNumbers
 
-    //calculates the value of the expresion by RPN
+    //calculates the value of the expression by RPN
     private Double calculateRPN(String input) {
         StringTokenizer tokens = new StringTokenizer(input);  //tokenize the input by ' '
         Stack<Double> stack = new Stack<>();  //stack for the numbers
