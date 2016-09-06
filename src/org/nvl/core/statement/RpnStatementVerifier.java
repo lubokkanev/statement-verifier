@@ -7,7 +7,7 @@ import org.nvl.core.rpn.verifier.NumberRpnVerifier;
 import org.nvl.core.rpn.verifier.StringRpnVerifier;
 import org.nvl.core.variable.manager.VariableManager;
 
-import static org.nvl.MessageConstants.INVALID_INPUT_MESSAGE;
+import static org.nvl.MessageConstants.INVALID_INPUT_FORMAT;
 
 public class RpnStatementVerifier implements StatementVerifier {
 
@@ -100,7 +100,7 @@ public class RpnStatementVerifier implements StatementVerifier {
                     }
                 }
                 if (!variableManager.containsVariable(variable)) {                      //if the variable is not declared
-                    throw new RuntimeException(INVALID_INPUT_MESSAGE);
+                    throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, statement, "Verification error"));
                 }
                 valueStatement.deleteCharAt(i);                                             //remove the variable from the resulted string
                 valueStatement.insert(i, variableManager.getVariable(variable).getValue());     //and add its value

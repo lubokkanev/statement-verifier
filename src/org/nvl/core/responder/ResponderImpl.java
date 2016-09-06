@@ -28,6 +28,7 @@ public class ResponderImpl implements Responder {
     private VariableSubstituter variableSubstituter;
     private VariableManager variableManager;
     private Divider divider;
+    private DividedInput substitutedInput;
 
     public ResponderImpl(InputTypeDeterminer typeDeterminer, RequestProcessor requestProcessor, InputValidator inputValidator, VariableManager variableManager) {
         this.typeDeterminer = typeDeterminer;
@@ -43,11 +44,7 @@ public class ResponderImpl implements Responder {
     public String process(String userInput) {
         String response = "";
 
-        String spaceFixedInput = inputSpaceFixer.fix(userInput);
-        DividedInput dividedInput = divider.divide(spaceFixedInput);
-        DividedInput substitutedInput = variableSubstituter.substitute(dividedInput);
-        validateInput(substitutedInput);
-
+        DividedInput dividedInput = checkInput(userInput);
         InputType inputType = typeDeterminer.determineType(substitutedInput.toString());
 
         if (inputType == InputType.NEW_VARIABLE) {
@@ -64,6 +61,25 @@ public class ResponderImpl implements Responder {
         }
 
         return response;
+    }
+
+    private DividedInput checkInput(String userInput) {
+        DividedInput dividedInput;
+
+        try {
+            String spaceFixedInput = inputSpaceFixer.fix(userInput);
+            dividedInput = divider.divide(spaceFixedInput);
+            substitutedInput = variableSubstituter.substitute(dividedInput);
+            validateInput(substitutedInput);
+        } catch (Exception e) {
+            if (e.getMessage().contains(INVALID_INPUT_FORMAT.substring(0, 10))) {
+                throw e;
+            } else {
+                throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, userInput, "Try again"));
+            }
+        }
+
+        return dividedInput;
     }
 
     private void computeRightSide(DividedInput dividedInput) {
@@ -96,22 +112,22 @@ public class ResponderImpl implements Responder {
             boolean validTypes = new InputTypeMatcher(variableManager).sidesTypeMatches(input.getLeftSide(), input.getRightSide());
 
             if (!validTypes) {
-                throw new RuntimeException(INVALID_INPUT_MESSAGE + "Incompatible value types. ");
+                throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, input, "Incompatible value types"));
             }
         } else {
             boolean isExisting = variableManager.containsVariable(input.getLeftSide());
             EvaluatedVariable variable = variableManager.getVariable(input.getLeftSide());
             if (isExisting && !sameTypes(variable.getType(), input.getRightSide())) {
-                throw new RuntimeException(INVALID_INPUT_MESSAGE + "Variable type change is not permitted. ");
+                throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, input, "Variable type change is not permitted"));
             } else {
                 if (!input.getLeftSide().matches("\\w+")) {
-                    throw new RuntimeException(INVALID_INPUT_MESSAGE + "Only letters, digits and underscores are permitted in variable names. ");
+                    throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, input, "Only letters, digits and underscores are permitted in variable names"));
                 }
             }
         }
 
         if (!validLeftSide || !validRightSide) {
-            throw new RuntimeException(INVALID_INPUT_MESSAGE);
+            throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, input, "Try again"));
         }
     }
 
