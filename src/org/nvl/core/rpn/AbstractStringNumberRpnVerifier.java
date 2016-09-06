@@ -16,7 +16,7 @@ public abstract class AbstractStringNumberRpnVerifier extends AbstractRpnVerifie
     public abstract boolean correct(StringBuilder input);
 
     //creates the Reverse Polish Notation
-    protected String createRPN(String input) {
+    public String createRPN(String input) {
         StringBuilder result = new StringBuilder();   //builder for the final result (RPN)
         boolean isInString = false;
         Stack<Character> operationStack = new Stack<>();  //sttack for the operation

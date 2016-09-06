@@ -12,6 +12,23 @@ import static org.nvl.MessageConstants.INVALID_INPUT_MESSAGE;
 public class RpnStatementVerifier implements StatementVerifier {
 
     private VariableManager variableManager;
+    private boolean isBooleanOperation;
+    private boolean isStringOperation;
+
+    public boolean isBooleanOperation() {
+        return isBooleanOperation;
+    }
+
+    public boolean isStringOperation() {
+        return isStringOperation;
+    }
+
+    public boolean isArrayOperation() {
+        return isArrayOperation;
+    }
+
+    private boolean isArrayOperation;
+    private StringBuilder valueStatement;
 
     public RpnStatementVerifier(VariableManager variableManager) {
         this.variableManager = variableManager;
@@ -19,9 +36,31 @@ public class RpnStatementVerifier implements StatementVerifier {
 
     @Override
     public boolean verifyStatement(String statement) {
-        StringBuilder valueStatement = new StringBuilder(statement);
+        checkType(statement);
+
         RpnVerifier verify;
-        boolean isBooleanOperation = false, isStringOperation = false, isArrayOperation = false;
+
+        if (isStringOperation) {        //we have string operations
+            verify = new StringRpnVerifier();       //we verify the statement
+            return verify.correct(valueStatement);
+        }
+        if (isArrayOperation) {
+            verify = new ArrayRpnVerifier();
+            return verify.correct(valueStatement);
+        }
+        if (isBooleanOperation) {                     //we have boolean operations
+            verify = new BooleanRpnVerifier();
+            return verify.correct(valueStatement);
+        }
+        verify = new NumberRpnVerifier();           //we have number operations
+        return verify.correct(valueStatement);
+    }
+
+    public void checkType(String statement) {
+        valueStatement = new StringBuilder(statement);
+        isBooleanOperation = false;
+        isStringOperation = false;
+        isArrayOperation = false;
         for (int i = 0; i < valueStatement.length(); ++i) {
 
             char character = valueStatement.charAt(i);
@@ -68,19 +107,5 @@ public class RpnStatementVerifier implements StatementVerifier {
                 i--;                                                                    //return one index to check the value
             }
         }
-        if (isStringOperation) {        //we have string operations
-            verify = new StringRpnVerifier();       //we verify the statement
-            return verify.correct(valueStatement);
-        }
-        if (isArrayOperation) {
-            verify = new ArrayRpnVerifier();
-            return verify.correct(valueStatement);
-        }
-        if (isBooleanOperation) {                     //we have boolean operations
-            verify = new BooleanRpnVerifier();
-            return verify.correct(valueStatement);
-        }
-        verify = new NumberRpnVerifier();           //we have number operations
-        return verify.correct(valueStatement);
     }
 }

@@ -30,7 +30,7 @@ public class NumberRpnVerifier extends AbstractStringNumberRpnVerifier {
     }   //end of correctForNumbers
 
     //calculates the value of the expression by RPN
-    private Double calculateRPN(String input) {
+    public Double calculateRPN(String input) {
         StringTokenizer tokens = new StringTokenizer(input);  //tokenize the input by ' '
         Stack<Double> stack = new Stack<>();  //stack for the numbers
         while (tokens.hasMoreTokens()) {   //while we have more tokens

@@ -31,7 +31,7 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
         return compare(left, right, operation);             //compare them with the operation
     }  //end of correct
 
-    private String createRPN(String input) {
+    public String createRPN(String input) {
         StringBuilder result = new StringBuilder();   //builder for the final result (RPN)
         Stack<String> operationStack = new Stack<>();  //stack for the operation
         char[] charInput = input.toCharArray();  //char array for the input
@@ -82,7 +82,7 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
         return result.toString();  //return resulted RPN
     }  //end of create RPN
 
-    private Boolean calculateRPN(String input) {
+    public Boolean calculateRPN(String input) {
         StringTokenizer tokens = new StringTokenizer(input);  //tokenize the input by ' '
         Stack<Boolean> stack = new Stack<>();  //stack for the booleans
         while (tokens.hasMoreTokens()) {   //while we have more tokens

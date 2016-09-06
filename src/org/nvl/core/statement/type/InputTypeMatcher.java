@@ -9,21 +9,11 @@ public class InputTypeMatcher {
         this.variableManager = variableManager;
     }
 
-    public boolean sidesTypeMatches(String input) {
-        String[] sideSplit = sideSplitInput(input);
-
-        if (sideSplit == null) {
-            return false;
-        } else if (sideSplit.length != 2) {
-            return true;
-        }
-
-        replaceWithValue(sideSplit);
-
-        boolean leftSideHasArrays = sideSplit[0].contains("{");
-        boolean leftSideHasStrings = sideSplit[0].contains("'");
-        boolean rightSideHasArrays = sideSplit[1].contains("{");
-        boolean rightSideHasStrings = sideSplit[1].contains("'");
+    public boolean sidesTypeMatches(String leftSide, String rightSide) {
+        boolean leftSideHasArrays = leftSide.contains("{");
+        boolean leftSideHasStrings = leftSide.contains("'");
+        boolean rightSideHasArrays = rightSide.contains("{");
+        boolean rightSideHasStrings = rightSide.contains("'");
 
         return leftSideHasArrays == rightSideHasArrays && leftSideHasStrings == rightSideHasStrings && !(leftSideHasArrays && leftSideHasStrings);
     }

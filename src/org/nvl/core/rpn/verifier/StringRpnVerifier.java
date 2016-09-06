@@ -5,12 +5,11 @@
  */
 package org.nvl.core.rpn.verifier;
 
+import org.nvl.core.input.split.SplitString;
 import org.nvl.core.rpn.AbstractStringNumberRpnVerifier;
 import org.nvl.core.variable.type.VariableTypeParserImpl;
 
 import java.util.Stack;
-import java.util.StringTokenizer;
-import org.nvl.core.input.split.SplitString;
 
 /**
  * @author niki
@@ -25,7 +24,7 @@ public class StringRpnVerifier extends AbstractStringNumberRpnVerifier {
         String[] split = input.split(operation);   //split by the operation
         String leftExpression = split[0].trim();            //left expression
         String rightExpression = split[1].trim();           //right expression
-        
+
         String leftRPN = createRPN(leftExpression);           //RPN for the left expression
         String rightRPN = createRPN(rightExpression);        //RPN for the right expression
 
@@ -35,7 +34,7 @@ public class StringRpnVerifier extends AbstractStringNumberRpnVerifier {
     }  //end of correct
 
     //calculate the reverse polish notation for strings
-    private String calculateRpnForString(String input) {
+    public String calculateRpnForString(String input) {
         SplitString tokens = new SplitString(input);
         Stack<String> stack = new Stack<>();  //stack for the numbers
         while (!tokens.isEmpty()) {   //while we have more tokens
@@ -59,7 +58,7 @@ public class StringRpnVerifier extends AbstractStringNumberRpnVerifier {
     private void plus(Stack<String> stack) {
         String right = stack.pop();
         String left = stack.pop();
-        
+
         String leftWithoutQuoute = left.substring(0, left.length() - 1);
         String rightWithoutQuoute = right.substring(1, right.length());
         stack.push(leftWithoutQuoute.concat(rightWithoutQuoute));

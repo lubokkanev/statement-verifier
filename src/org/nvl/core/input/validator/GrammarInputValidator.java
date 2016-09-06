@@ -20,24 +20,14 @@ public class GrammarInputValidator implements InputValidator {
     }
 
     @Override
-    public boolean isValid(String input) {
+    public boolean isValid(String side) {
         try {
-            splitString = new SplitString(input);
-
-            if (!inputTypeMatcher.sidesTypeMatches(input) || splitString.getSplitInput().length < 3) {
-                return false;
-            }
-
-            if (isSimpleDefinition()) {
-                return parseSimpleDefinition();
-            }
+            splitString = new SplitString(side);
 
             if (isExtendedBoolean()) {
-                if (parseBoolExpression()) {
-                    parseBoolComparison();
-                }
-            } else if (parseNotBool()) {
-                parseComparison();
+                parseBoolExpression();
+            } else {
+                parseNotBool();
             }
         } catch (RuntimeException e) {
             return false;
@@ -285,6 +275,7 @@ public class GrammarInputValidator implements InputValidator {
 
     private boolean parseBoolExpression() {
         String currentElement = splitString.getCurrentElement();
+
         if (currentElement.equals("!")) {
             splitString.setPosition(splitString.getPosition() + 1);
             return parseBoolExpression();

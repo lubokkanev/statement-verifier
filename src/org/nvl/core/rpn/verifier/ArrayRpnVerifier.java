@@ -28,12 +28,12 @@ public class ArrayRpnVerifier extends AbstractStringNumberRpnVerifier {
         String leftRPN = createRPN(leftExpression);           //RPN for the left expression
         String rightRPN = createRPN(rightExpression);        //RPN for the right expression
 
-        String left = calculateRPN(leftRPN);       //left string result
-        String right = calculateRPN(rightRPN);     //right string result
+        String left = calculateRpn(leftRPN);       //left string result
+        String right = calculateRpn(rightRPN);     //right string result
         return compare(left, right, operation);             //compare them with the operation
     }
 
-    private String calculateRPN(String input) {
+    public String calculateRpn(String input) {
         StringTokenizer tokens = new StringTokenizer(input);  //tokenize the input by ' '
         Stack<String> stack = new Stack<>();  //stack for the numbers
 
@@ -53,7 +53,7 @@ public class ArrayRpnVerifier extends AbstractStringNumberRpnVerifier {
             }   //end of switch
         }   //end of while
         return stack.pop();     //return result
-    } //end of calculateRPN
+    } //end of calculateRpn
 
     private void execute(Stack<String> stack, String operation) {  //execute + and *
         boolean leftIsNumber = false, rightIsNumber = false;        //if any of the operands is a number

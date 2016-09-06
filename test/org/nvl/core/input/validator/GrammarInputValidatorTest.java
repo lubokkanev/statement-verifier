@@ -35,22 +35,27 @@ public class GrammarInputValidatorTest {
 
     @Test
     public void testDefinition() {
-        assertTrue(grammarInputValidator.isValid("k = 10"));
+        assertTrue(grammarInputValidator.isValid("10"));
     }
 
     @Test
     public void testDefinition2() {
-        assertTrue(grammarInputValidator.isValid("s = 'this'"));
+        assertFalse(grammarInputValidator.isValid("s"));
+    }
+
+    @Test
+    public void testDefinition9() {
+        assertTrue(grammarInputValidator.isValid("str"));
     }
 
     @Test
     public void testDefinition3() {
-        assertTrue(grammarInputValidator.isValid("bool = FALSE"));
+        assertTrue(grammarInputValidator.isValid("FALSE"));
     }
 
     @Test
     public void testDefinition5() {
-        assertTrue(grammarInputValidator.isValid("bool == ! FALSE"));
+        assertTrue(grammarInputValidator.isValid("! FALSE"));
     }
 
     @Test

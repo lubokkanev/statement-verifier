@@ -17,16 +17,16 @@ public class InputSpaceFixer {
     }
 
     private String isolate(String input) {
-        String[] specialElements = {"\\(", "\\)", "\\+", "\\*", "&&", "\\|\\|", "!", "==", "<=", ">="};
+        String[] coupledSpecialElements = {"\\(", "\\)", "\\+", "\\*", "&&", "\\|\\|", "!=", "!", "==", "<=", ">="};
         String[] singleSpecialElements = {"=", "<", ">"};
 
-        input = singleIsolate(input, specialElements, ISOLATION_FORMAT);
+        input = singleIsolate(input, coupledSpecialElements, ISOLATION_FORMAT);
 
         if (!input.contains("==") && !input.contains("<=") && !input.contains(">=")) {
             input = singleIsolate(input, singleSpecialElements, ISOLATION_FORMAT);
         }
 
-        return input;
+        return input.replaceAll("! =", "!=");
     }
 
     private String singleIsolate(String input, String[] specialElements, String format) {
