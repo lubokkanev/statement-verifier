@@ -49,7 +49,9 @@ public abstract class AbstractStringNumberRpnVerifier extends AbstractRpnVerifie
                 case ' ':
                     if(isInString)
                         result.append(charInput[i]);
+                    break;
                 case '\'':
+                        result.append(charInput[i]);
                     break;
                 case ')':
                     while (!operationStack.empty() && operationStack.peek() != '(') {   // pop everything from stack to the result until we get to the '('

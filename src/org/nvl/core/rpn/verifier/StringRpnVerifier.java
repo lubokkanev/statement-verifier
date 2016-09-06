@@ -25,7 +25,7 @@ public class StringRpnVerifier extends AbstractStringNumberRpnVerifier {
         String[] split = input.split(operation);   //split by the operation
         String leftExpression = split[0].trim();            //left expression
         String rightExpression = split[1].trim();           //right expression
-
+        
         String leftRPN = createRPN(leftExpression);           //RPN for the left expression
         String rightRPN = createRPN(rightExpression);        //RPN for the right expression
 
@@ -59,7 +59,10 @@ public class StringRpnVerifier extends AbstractStringNumberRpnVerifier {
     private void plus(Stack<String> stack) {
         String right = stack.pop();
         String left = stack.pop();
-        stack.push(left.concat(right));
+        
+        String leftWithoutQuoute = left.substring(0, left.length() - 1);
+        String rightWithoutQuoute = right.substring(1, right.length());
+        stack.push(leftWithoutQuoute.concat(rightWithoutQuoute));
     } //end of plus
 
     //concatenate string given amount of times
