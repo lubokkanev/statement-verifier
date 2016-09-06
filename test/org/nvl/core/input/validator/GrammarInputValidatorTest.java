@@ -69,8 +69,8 @@ public class GrammarInputValidatorTest {
     }
 
     @Test
-    public void testWrongDefinition() {
-        assertFalse(grammarInputValidator.isValid("s = 'this is it'"));
+    public void testDefinition6() {
+        assertTrue(grammarInputValidator.isValid("s = 'this is it'"));
     }
 
     @Test

@@ -61,6 +61,6 @@ public abstract class AbstractStringNumberRpnVerifier extends AbstractRpnVerifie
         while (!operationStack.isEmpty()) {  //pop every operation from the stack to the result
             result.append(' ').append(operationStack.pop());
         }  //end of while
-        return result.toString();  //return resulter RPN
+        return result.toString();  //return resulted RPN
     }  //end of create RPN
 }

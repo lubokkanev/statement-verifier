@@ -51,7 +51,7 @@ public class InputTypeMatcher {
     }
 
     private String[] sideSplitInput(String input) {
-        String[] specialDividers = new String[] {"<=", ">=", "=="};
+        String[] specialDividers = new String[] {"<=", ">=", "==", "!="};
         String[] sideSplit = input.split("[<>]");
         boolean foundDivider = false;
 

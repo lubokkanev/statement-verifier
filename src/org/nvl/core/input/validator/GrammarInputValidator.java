@@ -187,7 +187,7 @@ public class GrammarInputValidator implements InputValidator {
     private boolean isString(String currentElement) {
         boolean isVariable = variableManager.containsVariable(currentElement);
 
-        return currentElement.matches("'\\w+'") || (isVariable && variableManager.getVariable(currentElement).getType() == VariableType.STRING);
+        return currentElement.matches("'[\\w\\s]+'") || (isVariable && variableManager.getVariable(currentElement).getType() == VariableType.STRING);
     }
 
     private boolean isArray(String currentElement) {

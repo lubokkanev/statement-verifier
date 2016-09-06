@@ -32,9 +32,8 @@ public class VariableTypeParserImpl implements VariableTypeParser {
     }
 
     private boolean isArray(String value) {
-        char[] charValue = value.toCharArray();
-        for (int i = 0; i < charValue.length; i++) {
-            if (charValue[i] == '[' || charValue[i] == '{') {
+        for (char aCharValue : value.toCharArray()) {
+            if (aCharValue == '[' || aCharValue == '{') {
                 return true;
             }
         }

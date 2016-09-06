@@ -1,7 +1,5 @@
 package org.nvl.core.input.white_space;
 
-import org.nvl.core.input.secure.StringSecurer;
-
 public class InputSpaceFixer {
     private static final String ISOLATION_FORMAT = " %s ";
     private static final String NON_ISOLATION_FORMAT = "%s";
@@ -9,7 +7,6 @@ public class InputSpaceFixer {
     public String fix(String input) {
         input = doNotIsolate(input);
         input = isolate(input);
-        input = new StringSecurer(input).proofString();
         return input.trim();
     }
 

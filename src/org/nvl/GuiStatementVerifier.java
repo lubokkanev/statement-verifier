@@ -36,7 +36,7 @@ public class GuiStatementVerifier {
         InputValidator inputValidator = new GrammarInputValidator(variableManager);
 
         InputTypeDeterminer typeDeterminer = new SimpleInputTypeDeterminer(variableManager);
-        Responder responder = new ResponderImpl(typeDeterminer, requestProcessor, inputValidator);
+        Responder responder = new ResponderImpl(typeDeterminer, requestProcessor, inputValidator, variableManager);
 
         graphicalUserInterface = new SwingGraphicalUserInterface(responder);
     }

@@ -40,7 +40,7 @@ public class ResponderTest {
         requestProcessor = new RequestProcessorImpl(statementVerifier, variableTypeParser, variableDefinitionParser, variableManager);
         InputValidator inputValidator = new GrammarInputValidator(variableManager);
 
-        responder = new ResponderImpl(typeDeterminer, requestProcessor, inputValidator);
+        responder = new ResponderImpl(typeDeterminer, requestProcessor, inputValidator, variableManager);
     }
 
     @Test(expected = RuntimeException.class)
@@ -96,5 +96,14 @@ public class ResponderTest {
     @Test
     public void testProcess_addVariable() {
         assertEquals(MessageConstants.NEW_VARIABLE_MESSAGE, responder.process("b=   {  1   ,   3,4}"));
+    }
+
+    @Test
+    public void testProcess_addVariableStringWithSpaces() {
+        String value = "'a b c'";
+        String input = "a = " + value;
+
+        assertEquals(MessageConstants.NEW_VARIABLE_MESSAGE, responder.process(input));
+        assertEquals(value, variableManager.getVariable("a").getValue());
     }
 }
