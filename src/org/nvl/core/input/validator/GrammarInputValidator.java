@@ -1,7 +1,6 @@
 package org.nvl.core.input.validator;
 
 import org.nvl.core.input.split.SplitString;
-import org.nvl.core.statement.type.InputTypeMatcher;
 import org.nvl.core.variable.VariableType;
 import org.nvl.core.variable.manager.VariableManager;
 
@@ -11,12 +10,10 @@ import org.nvl.core.variable.manager.VariableManager;
 public class GrammarInputValidator implements InputValidator {
     private VariableManager variableManager;
 
-    private InputTypeMatcher inputTypeMatcher;
     private SplitString splitString;
 
     public GrammarInputValidator(VariableManager variableManager) {
         this.variableManager = variableManager;
-        inputTypeMatcher = new InputTypeMatcher(variableManager);
     }
 
     @Override
@@ -34,50 +31,6 @@ public class GrammarInputValidator implements InputValidator {
         }
 
         return splitString.isEmpty();
-    }
-
-    private boolean parseBoolComparison() {
-        if (splitString.getCurrentElement().equals("==") || splitString.getCurrentElement().equals("!=")) {
-            splitString.nextPosition();
-            return parseBoolExpression();
-        }
-
-        return false;
-    }
-
-    private boolean parseSimpleDefinition() {
-        if (variableManager.containsVariable(splitString.getNthElement(0))) {
-            return variableMatchesRightSideType();
-        } else {
-            return isValidVariableName(splitString.getNthElement(0)) && matchesTypes(splitString.getNthElement(2));
-        }
-    }
-
-    private boolean variableMatchesRightSideType() {
-        String variable = splitString.getNthElement(0);
-        return variableManager.getVariable(variable).getType() == getType(splitString.getNthElement(2));
-    }
-
-    private VariableType getType(String input) {
-        if (isNumber(input)) {
-            return VariableType.NUMBER;
-        } else if (isArray(input)) {
-            return VariableType.ARRAY;
-        } else if (isBoolean(input)) {
-            return VariableType.BOOLEAN;
-        } else if (isString(input)) {
-            return VariableType.STRING;
-        } else {
-            return null;
-        }
-    }
-
-    private boolean isValidVariableName(String variableName) {
-        return variableName.matches("[a-zA-Z]+");
-    }
-
-    private boolean isSimpleDefinition() {
-        return splitString.getSplitInput().length == 3 && splitString.getNthElement(1).equals("=");
     }
 
     private boolean isExtendedBoolean() {
@@ -191,24 +144,6 @@ public class GrammarInputValidator implements InputValidator {
 
     private boolean isArrayValue(String currentElement) {
         return currentElement.matches("\\{\\d+(,\\d+)*\\}");
-    }
-
-    private boolean matchesTypes(String currentElement) {
-        return isString(currentElement) || isNumber(currentElement) || isBoolean(currentElement) || isArray(currentElement);
-    }
-
-    private boolean parseComparison() {
-        if (isComparisonSymbol(splitString.getCurrentElement())) {
-            splitString.setPosition(splitString.getPosition() + 1);
-            return parseNotBool();
-        }
-
-        return false;
-    }
-
-    private boolean isComparisonSymbol(String currentElement) {
-        return currentElement.equals("==") || currentElement.equals(">") || currentElement.equals("<") || currentElement.equals("<=") || currentElement.equals(">=") ||
-                currentElement.equals("!=");
     }
 
     private boolean parseIntExpression() {
