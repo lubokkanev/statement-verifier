@@ -18,6 +18,7 @@ public abstract class AbstractStringNumberRpnVerifier extends AbstractRpnVerifie
     //creates the Reverse Polish Notation
     protected String createRPN(String input) {
         StringBuilder result = new StringBuilder();   //builder for the final result (RPN)
+        boolean isInString = false;
         Stack<Character> operationStack = new Stack<>();  //sttack for the operation
         char[] charInput = input.toCharArray();  //char array for the input
         int i = 0;
@@ -26,6 +27,8 @@ public abstract class AbstractStringNumberRpnVerifier extends AbstractRpnVerifie
             i++;
         } //end of if
         while (i < charInput.length) {   //iterrate through the input
+            if(charInput[i] == '\'')
+                isInString = !isInString;
             switch (charInput[i]) {
                 case '+':
                 case '-':
@@ -42,7 +45,11 @@ public abstract class AbstractStringNumberRpnVerifier extends AbstractRpnVerifie
                     result.append(' ');
                 case '(':
                     operationStack.push(charInput[i]);
+                    break;
                 case ' ':
+                    if(isInString)
+                        result.append(charInput[i]);
+                case '\'':
                     break;
                 case ')':
                     while (!operationStack.empty() && operationStack.peek() != '(') {   // pop everything from stack to the result until we get to the '('

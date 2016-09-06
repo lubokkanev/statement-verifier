@@ -10,6 +10,7 @@ import org.nvl.core.variable.type.VariableTypeParserImpl;
 
 import java.util.Stack;
 import java.util.StringTokenizer;
+import org.nvl.core.input.split.SplitString;
 
 /**
  * @author niki
@@ -35,10 +36,11 @@ public class StringRpnVerifier extends AbstractStringNumberRpnVerifier {
 
     //calculate the reverse polish notation for strings
     private String calculateRpnForString(String input) {
-        StringTokenizer tokens = new StringTokenizer(input);  //tokenize the input by ' '
+       // StringTokenizer tokens = new StringTokenizer(input);  //tokenize the input by ' '
+        SplitString tokens = new SplitString(input);
         Stack<String> stack = new Stack<>();  //stack for the numbers
-        while (tokens.hasMoreTokens()) {   //while we have more tokens
-            String current = tokens.nextToken();
+        while (!tokens.isEmpty()) {   //while we have more tokens
+            String current = tokens.getCurrentElement();
             switch (current) {        //switch to see if current string is operation or string
                 case "+":
                     plus(stack);
@@ -49,6 +51,7 @@ public class StringRpnVerifier extends AbstractStringNumberRpnVerifier {
                 default:
                     stack.push(current);       //current is string
             }   //end of switch
+            tokens.nextPosition();
         }   //end of while
         return stack.pop();     //return result
     } //end of calculateRpnForStrings
