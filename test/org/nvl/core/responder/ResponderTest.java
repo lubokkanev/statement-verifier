@@ -27,7 +27,6 @@ import static org.junit.Assert.assertEquals;
 public class ResponderTest {
     private Responder responder;
     private VariableManager variableManager;
-    private RequestProcessor requestProcessor;
 
     @Before
     public void setUp() {
@@ -37,7 +36,7 @@ public class ResponderTest {
         StatementVerifier statementVerifier = new RpnStatementVerifier(variableManager);
         VariableTypeParser variableTypeParser = new VariableTypeParserImpl();
         VariableDefinitionParser variableDefinitionParser = new VariableDefinitionParserImpl();
-        requestProcessor = new RequestProcessorImpl(statementVerifier, variableTypeParser, variableDefinitionParser, variableManager);
+        RequestProcessor requestProcessor = new RequestProcessorImpl(statementVerifier, variableTypeParser, variableDefinitionParser, variableManager);
         InputValidator inputValidator = new GrammarInputValidator(variableManager);
 
         responder = new ResponderImpl(typeDeterminer, requestProcessor, inputValidator, variableManager);

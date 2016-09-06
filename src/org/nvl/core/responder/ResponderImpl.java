@@ -60,7 +60,7 @@ public class ResponderImpl implements Responder {
             response = EXISTING_VARIABLE_MESSAGE;
         } else if (inputType == InputType.STATEMENT) {
             boolean validStatement = requestProcessor.verifyStatement(substitutedInput.toString());
-            response = String.format(STATEMENT_FORMAT, userInput, Boolean.toString(validStatement).toUpperCase());
+            response = String.format(STATEMENT_FORMAT, substitutedInput, Boolean.toString(validStatement).toUpperCase());
         }
 
         return response;
@@ -96,16 +96,16 @@ public class ResponderImpl implements Responder {
             boolean validTypes = new InputTypeMatcher(variableManager).sidesTypeMatches(input.getLeftSide(), input.getRightSide());
 
             if (!validTypes) {
-                throw new RuntimeException(INVALID_INPUT_MESSAGE);
+                throw new RuntimeException(INVALID_INPUT_MESSAGE + "Incompatible value types. ");
             }
         } else {
             boolean isExisting = variableManager.containsVariable(input.getLeftSide());
             EvaluatedVariable variable = variableManager.getVariable(input.getLeftSide());
             if (isExisting && !sameTypes(variable.getType(), input.getRightSide())) {
-                throw new RuntimeException(INVALID_INPUT_MESSAGE);
+                throw new RuntimeException(INVALID_INPUT_MESSAGE + "Variable type change is not permitted. ");
             } else {
                 if (!input.getLeftSide().matches("\\w+")) {
-                    throw new RuntimeException(INVALID_INPUT_MESSAGE);
+                    throw new RuntimeException(INVALID_INPUT_MESSAGE + "Only letters, digits and underscores are permitted in variable names. ");
                 }
             }
         }
