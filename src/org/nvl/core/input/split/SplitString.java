@@ -80,7 +80,7 @@ public class SplitString {
         splitInput[n] = value;
     }
 
-    public void setCurrentEelement(String value) {
+    public void setCurrentElement(String value) {
         setNthElement(position, value);
     }
 

@@ -29,7 +29,7 @@ public class VariableSubstituter {
 
             if (variableManager.containsVariable(element)) {
                 String value = variableManager.getVariable(element).getValue();
-                splitString.setCurrentEelement(value);
+                splitString.setCurrentElement(value);
             }
 
             splitString.nextPosition();
