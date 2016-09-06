@@ -36,7 +36,6 @@ public class StringRpnVerifier extends AbstractStringNumberRpnVerifier {
 
     //calculate the reverse polish notation for strings
     private String calculateRpnForString(String input) {
-       // StringTokenizer tokens = new StringTokenizer(input);  //tokenize the input by ' '
         SplitString tokens = new SplitString(input);
         Stack<String> stack = new Stack<>();  //stack for the numbers
         while (!tokens.isEmpty()) {   //while we have more tokens

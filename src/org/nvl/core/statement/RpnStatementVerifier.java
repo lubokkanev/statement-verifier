@@ -69,15 +69,6 @@ public class RpnStatementVerifier implements StatementVerifier {
             }
         }
         if (isStringOperation) {        //we have string operations
-           /* int i = 0;
-            while (i < valueStatement.length()) {
-                if (valueStatement.charAt(i) == '\'') //because the RPN for strings does not work with Quotes
-                {
-                    valueStatement.deleteCharAt(i);
-                } else {
-                    i++;
-                }
-            }*/
             verify = new StringRpnVerifier();       //we verify the statement
             return verify.correct(valueStatement);
         }
