@@ -13,15 +13,17 @@ public class VariableSubstituter {
     }
 
     public DividedInput substitute(DividedInput input) {
-        input.setRightSide(substituteWithValues(input.getRightSide()));
+        DividedInput result = new DividedInput(input.getLeftSide(), null, input.getOperation());
+
+        result.setRightSide(substituteVariables(input.getRightSide()));
         if (!input.getOperation().equals("=")) {
-            input.setLeftSide(substituteWithValues(input.getLeftSide()));
+            result.setLeftSide(substituteVariables(input.getLeftSide()));
         }
 
-        return input;
+        return result;
     }
 
-    private String substituteWithValues(String side) {
+    private String substituteVariables(String side) {
         SplitString splitString = new SplitString(side);
 
         while (!splitString.isEmpty()) {

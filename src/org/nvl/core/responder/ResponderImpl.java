@@ -60,7 +60,7 @@ public class ResponderImpl implements Responder {
             response = EXISTING_VARIABLE_MESSAGE;
         } else if (inputType == InputType.STATEMENT) {
             boolean validStatement = requestProcessor.verifyStatement(substitutedInput.toString());
-            response = String.format(STATEMENT_FORMAT, substitutedInput, Boolean.toString(validStatement).toUpperCase());
+            response = String.format(STATEMENT_FORMAT, dividedInput, Boolean.toString(validStatement).toUpperCase());
         }
 
         return response;
