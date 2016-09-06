@@ -78,7 +78,7 @@ public class ResponderImpl implements Responder {
         } else if (sameTypes(VariableType.NUMBER, dividedInput.getRightSide())) {
             NumberRpnVerifier rpnVerifier = new NumberRpnVerifier();
             String rpn = rpnVerifier.createRPN(dividedInput.getRightSide());
-            dividedInput.setRightSide(rpnVerifier.calculateRPN(rpn).toString());
+            dividedInput.setRightSide(String.valueOf(rpnVerifier.calculateRPN(rpn).intValue()));
         } else if (sameTypes(VariableType.BOOLEAN, dividedInput.getRightSide())) {
             BooleanRpnVerifier rpnVerifier = new BooleanRpnVerifier();
             String rpn = rpnVerifier.createRPN(dividedInput.getRightSide());

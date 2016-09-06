@@ -1,7 +1,6 @@
 package org.nvl.core.statement;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.nvl.core.variable.EvaluatedVariable;
 import org.nvl.core.variable.VariableType;
@@ -61,7 +60,6 @@ public class StatementVerifierTest_string {
         assertTrue(statementVerifier.verifyStatement("s + 'a' == 'aSd' + 'a'"));
     }
 
-    @Ignore("Test ignored: Not implemented nor needed for now. ")
     @Test
     public void testVerityStatement_spacesMatter() {
         assertFalse(statementVerifier.verifyStatement("'one two' == 'o net wo'"));
@@ -69,7 +67,7 @@ public class StatementVerifierTest_string {
 
     @Test
     public void testVerifyStatement_spaces() {
-        variableManager.addVariable(new EvaluatedVariable("s", "'once upon'", VariableType.STRING));
+        variableManager.addVariable(new EvaluatedVariable("s", "'once upon '", VariableType.STRING));
         assertTrue(statementVerifier.verifyStatement("s + 'a time' == 'once upon a time'"));
     }
 }
